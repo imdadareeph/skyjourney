@@ -35,10 +35,9 @@ npm run dev
 ```
 
 **Screenhot
-```
+
 ![alt text](https://raw.githubusercontent.com/imdadareeph/skyjourney/refs/heads/main/public/homepage.png "homepage")
 
-```
 
 **Edit a file directly in GitHub**
 
