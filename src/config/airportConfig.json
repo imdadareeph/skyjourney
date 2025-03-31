@@ -1,0 +1,904 @@
+{
+  "airports": [
+    {
+      "code": "AAR",
+      "name": "Aarhus Airport",
+      "city": "Aarhus",
+      "country": "Denmark"
+    },
+    {
+      "code": "ABD",
+      "name": "Abadan Airport",
+      "city": "Abadan",
+      "country": "Iran"
+    },
+    {
+      "code": "AEH",
+      "name": "Abeche Airport",
+      "city": "Abeche",
+      "country": "Chad"
+    },
+    {
+      "code": "ABZ",
+      "name": "Aberdeen Airport",
+      "city": "Aberdeen",
+      "country": "United Kingdom"
+    },
+    {
+      "code": "ABR",
+      "name": "Aberdeen Regional Airport",
+      "city": "Aberdeen (SD)",
+      "country": "USA"
+    },
+    {
+      "code": "ABJ",
+      "name": "Port Bouet Airport",
+      "city": "Abidjan",
+      "country": "Cote d'Ivoire"
+    },
+    {
+      "code": "ABI",
+      "name": "Abilene Regional Airport",
+      "city": "Abilene (TX)",
+      "country": "USA"
+    },
+    {
+      "code": "AUH",
+      "name": "Abu Dhabi International",
+      "city": "Abu Dhabi",
+      "country": "United Arab Emirates"
+    },
+    {
+      "code": "ABV",
+      "name": "Nnamdi Azikiwe International Airport",
+      "city": "Abuja",
+      "country": "Nigeria"
+    },
+    {
+      "code": "AUE",
+      "name": "Abu Rudeis Airport",
+      "city": "Abu Rudeis",
+      "country": "Egypt"
+    },
+    {
+      "code": "ABS",
+      "name": "Abu Simbel Airport",
+      "city": "Abu Simbel",
+      "country": "Egypt"
+    },
+    {
+      "code": "ACA",
+      "name": "Acapulco International Airport",
+      "city": "Acapulco",
+      "country": "Mexico"
+    },
+    {
+      "code": "ACC",
+      "name": "Kotoka International Airport",
+      "city": "Accra",
+      "country": "Ghana"
+    },
+    {
+      "code": "ADA",
+      "name": "Adana Airport",
+      "city": "Adana",
+      "country": "Turkey"
+    },
+    {
+      "code": "ADD",
+      "name": "Bole International Airport",
+      "city": "Addis Ababa",
+      "country": "Ethiopia"
+    },
+    {
+      "code": "ADL",
+      "name": "Adelaide Airport",
+      "city": "Adelaide",
+      "country": "Australia"
+    },
+    {
+      "code": "ADE",
+      "name": "Aden International Airport",
+      "city": "Aden",
+      "country": "Yemen"
+    },
+    {
+      "code": "ADF",
+      "name": "Adiyaman Airport",
+      "city": "Adiyaman",
+      "country": "Turkey"
+    },
+    {
+      "code": "AER",
+      "name": "Sochi International Airport",
+      "city": "Adler/Sochi",
+      "country": "Russia"
+    },
+    {
+      "code": "AJY",
+      "name": "Agades Airport",
+      "city": "Agades",
+      "country": "Niger"
+    },
+    {
+      "code": "AGA",
+      "name": "Agadir Airport",
+      "city": "Agadir",
+      "country": "Morocco"
+    },
+    {
+      "code": "SUM",
+      "name": "Agana Airport",
+      "city": "Agana (Hagåtña)",
+      "country": "Guam"
+    },
+    {
+      "code": "AGZ",
+      "name": "Aggeneys Airport",
+      "city": "Aggeneys",
+      "country": "South Africa"
+    },
+    {
+      "code": "BQN",
+      "name": "Rafael Hernandez Airport",
+      "city": "Aguadilla",
+      "country": "Puerto Rico"
+    },
+    {
+      "code": "AGU",
+      "name": "Aguascalientes International Airport",
+      "city": "Aguascaliente",
+      "country": "Mexico"
+    },
+    {
+      "code": "AMD",
+      "name": "Ahmedabad Airport",
+      "city": "Ahmedabad",
+      "country": "India"
+    },
+    {
+      "code": "AYU",
+      "name": "Aiyura Airport",
+      "city": "Aiyura",
+      "country": "Papua New Guinea"
+    },
+    {
+      "code": "AJA",
+      "name": "Ajaccio Airport",
+      "city": "Ajaccio",
+      "country": "France"
+    },
+    {
+      "code": "AXT",
+      "name": "Akita Airport",
+      "city": "Akita",
+      "country": "Japan"
+    },
+    {
+      "code": "CAK",
+      "name": "Akron-Canton Regional Airport",
+      "city": "Akron (OH)",
+      "country": "USA"
+    },
+    {
+      "code": "AKT",
+      "name": "RAF Akrotiri",
+      "city": "Akrotiri",
+      "country": "Cyprus"
+    },
+    {
+      "code": "AAN",
+      "name": "Al Ain International Airport",
+      "city": "Al Ain",
+      "country": "United Arab Emirates"
+    },
+    {
+      "code": "AAC",
+      "name": "Al Arish International Airport",
+      "city": "Al Arish",
+      "country": "Egypt"
+    },
+    {
+      "code": "ALH",
+      "name": "Albany Airport",
+      "city": "Albany",
+      "country": "Australia"
+    },
+    {
+      "code": "ABY",
+      "name": "Southwest Georgia Regional Airport",
+      "city": "Albany (GA)",
+      "country": "USA"
+    },
+    {
+      "code": "ALB",
+      "name": "Albany International Airport",
+      "city": "Albany (NY)",
+      "country": "USA"
+    },
+    {
+      "code": "LBI",
+      "name": "Albi Airport",
+      "city": "Albi",
+      "country": "France"
+    },
+    {
+      "code": "AAL",
+      "name": "Aalborg Airport",
+      "city": "Alborg",
+      "country": "Denmark"
+    },
+    {
+      "code": "ABQ",
+      "name": "Albuquerque International Sunport",
+      "city": "Albuquerque (NM)",
+      "country": "USA"
+    },
+    {
+      "code": "ABX",
+      "name": "Albury Airport",
+      "city": "Albury",
+      "country": "Australia"
+    },
+    {
+      "code": "ACI",
+      "name": "Alderney Airport",
+      "city": "Alderney",
+      "country": "Channel Islands"
+    },
+    {
+      "code": "ALP",
+      "name": "Aleppo International Airport",
+      "city": "Aleppo",
+      "country": "Syria"
+    },
+    {
+      "code": "AES",
+      "name": "Alesund Airport",
+      "city": "Alesund",
+      "country": "Norway"
+    },
+    {
+      "code": "ALJ",
+      "name": "Alexander Bay Airport",
+      "city": "Alexander Bay",
+      "country": "South Africa"
+    },
+    {
+      "code": "HBH",
+      "name": "Borg el Arab Airport",
+      "city": "Alexandria",
+      "country": "Egypt"
+    },
+    {
+      "code": "ALY",
+      "name": "El Nhouza Airport",
+      "city": "Alexandria",
+      "country": "Egypt"
+    },
+    {
+      "code": "ESF",
+      "name": "Esler Field",
+      "city": "Alexandria",
+      "country": "USA"
+    },
+    {
+      "code": "FJR",
+      "name": "Fujairah International Airport",
+      "city": "Alfujairah",
+      "country": "United Arab Emirates"
+    },
+    {
+      "code": "AHO",
+      "name": "Alghero Sassari Airport",
+      "city": "Alghero Sassari",
+      "country": "Italy"
+    },
+    {
+      "code": "ALG",
+      "name": "Houari Boumediene Airport",
+      "city": "Algiers",
+      "country": "Algeria"
+    },
+    {
+      "code": "AHU",
+      "name": "Al Hoceima Airport",
+      "city": "Al Hoceima",
+      "country": "Morocco"
+    },
+    {
+      "code": "ALC",
+      "name": "Alicante Airport",
+      "city": "Alicante",
+      "country": "Spain"
+    },
+    {
+      "code": "ASP",
+      "name": "Alice Springs Airport",
+      "city": "Alice Springs",
+      "country": "Australia"
+    },
+    {
+      "code": "ADY",
+      "name": "Alldays Airport",
+      "city": "Alldays",
+      "country": "South Africa"
+    },
+    {
+      "code": "ABE",
+      "name": "Lehigh Valley International Airport",
+      "city": "Allentown (PA)",
+      "country": "USA"
+    },
+    {
+      "code": "ALA",
+      "name": "Almaty International Airport",
+      "city": "Almaty",
+      "country": "Kazakhstan"
+    },
+    {
+      "code": "LEI",
+      "name": "Almeria Airport",
+      "city": "Almeria",
+      "country": "Spain"
+    },
+    {
+      "code": "ALF",
+      "name": "Alta Airport",
+      "city": "Alta",
+      "country": "Norway"
+    },
+    {
+      "code": "AAT",
+      "name": "Altay Airport",
+      "city": "Altay",
+      "country": "PR China"
+    },
+    {
+      "code": "ACH",
+      "name": "St. Gallen–Altenrhein Airport",
+      "city": "Altenrhein",
+      "country": "Switzerland"
+    },
+    {
+      "code": "AOO",
+      "name": "Altoona Airport",
+      "city": "Altoona (PA)",
+      "country": "USA"
+    },
+    {
+      "code": "AXS",
+      "name": "Altus Air Force Base",
+      "city": "Altus",
+      "country": "USA"
+    },
+    {
+      "code": "ASJ",
+      "name": "Amami Airport",
+      "city": "Amami",
+      "country": "Japan"
+    },
+    {
+      "code": "AMA",
+      "name": "Rick Husband Amarillo International Airport",
+      "city": "Amarillo (TX)",
+      "country": "USA"
+    },
+    {
+      "code": "AZB",
+      "name": "Amazon Bay Airport",
+      "city": "Amazon Bay",
+      "country": "Papua New Guinea"
+    },
+    {
+      "code": "AMM",
+      "name": "Queen Alia International Airport",
+      "city": "Amman",
+      "country": "Jordan"
+    },
+    {
+      "code": "ADJ",
+      "name": "Amman-Marka International Airport",
+      "city": "Amman",
+      "country": "Jordan"
+    },
+    {
+      "code": "ATQ",
+      "name": "Sri Guru Ram Dass Jee International Airport",
+      "city": "Amritsar",
+      "country": "India"
+    },
+    {
+      "code": "AMS",
+      "name": "Amsterdam Airport Schiphol",
+      "city": "Amsterdam",
+      "country": "Netherlands"
+    },
+    {
+      "code": "QNB",
+      "name": "Anand Airport",
+      "city": "Anand",
+      "country": "India"
+    },
+    {
+      "code": "ANC",
+      "name": "Ted Stevens Anchorage International",
+      "city": "Anchorage (AK)",
+      "country": "USA"
+    },
+    {
+      "code": "AOI",
+      "name": "Ancona Falconara Airport",
+      "city": "Ancona",
+      "country": "Italy"
+    },
+    {
+      "code": "ALV",
+      "name": "Andorra La Vella Heliport",
+      "city": "Andorra La Vella",
+      "country": "Andorra"
+    },
+    {
+      "code": "AXA",
+      "name": "Clayton J. Lloyd International Airport",
+      "city": "Anguilla",
+      "country": "Anguilla"
+    },
+    {
+      "code": "AJN",
+      "name": "Anjouan Airport",
+      "city": "Anjouan",
+      "country": "Comoros"
+    },
+    {
+      "code": "ANK",
+      "name": "Ankara Airport",
+      "city": "Ankara",
+      "country": "Turkey"
+    },
+    {
+      "code": "ESB",
+      "name": "Esenboğa International Airport",
+      "city": "Ankara",
+      "country": "Turkey"
+    },
+    {
+      "code": "AAE",
+      "name": "Annaba Airport",
+      "city": "Annaba",
+      "country": "Algeria"
+    },
+    {
+      "code": "ARB",
+      "name": "Ann Arbor Municipal Airport",
+      "city": "Ann Arbor (MI)",
+      "country": "USA"
+    },
+    {
+      "code": "NCY",
+      "name": "Annecy Airport",
+      "city": "Annecy",
+      "country": "France"
+    },
+    {
+      "code": "ANB",
+      "name": "Anniston Regional Airport",
+      "city": "Anniston (AL)",
+      "country": "USA"
+    },
+    {
+      "code": "AYT",
+      "name": "Antalya Airport",
+      "city": "Antalya",
+      "country": "Turkey"
+    },
+    {
+      "code": "TNR",
+      "name": "Ivato International Airport",
+      "city": "Antananarivo",
+      "country": "Madagascar"
+    },
+    {
+      "code": "ANU",
+      "name": "V.C. Bird International",
+      "city": "Antigua",
+      "country": "Antigua and Barbuda"
+    },
+    {
+      "code": "ANR",
+      "name": "Antwerp International Airport",
+      "city": "Antwerp",
+      "country": "Belgium"
+    },
+    {
+      "code": "AOJ",
+      "name": "Aomori Airport",
+      "city": "Aomori",
+      "country": "Japan"
+    },
+    {
+      "code": "APW",
+      "name": "Faleolo International Airport",
+      "city": "Apia",
+      "country": "Samoa"
+    },
+    {
+      "code": "ATW",
+      "name": "Appleton International Airport",
+      "city": "Appelton/Neenah/Menasha (WI)",
+      "country": "USA"
+    },
+    {
+      "code": "AQJ",
+      "name": "Aqaba King Hussein International Airport",
+      "city": "Aqaba",
+      "country": "Jordan"
+    },
+    {
+      "code": "AJU",
+      "name": "Santa Maria Airport",
+      "city": "Aracaju",
+      "country": "Brazil"
+    },
+    {
+      "code": "ARH",
+      "name": "Talagi Airport",
+      "city": "Arkhangelsk",
+      "country": "Russia"
+    },
+    {
+      "code": "ARK",
+      "name": "Arusha Airport",
+      "city": "Arusha",
+      "country": "Tanzania"
+    },
+    {
+      "code": "GPA",
+      "name": "Araxos Airport",
+      "city": "Araxos",
+      "country": "Greece"
+    },
+    {
+      "code": "RLT",
+      "name": "Arlit Airport",
+      "city": "Arlit",
+      "country": "Niger"
+    },
+    {
+      "code": "ACE",
+      "name": "Lanzarote Airport",
+      "city": "Arrecife/Lanzarote",
+      "country": "Spain"
+    },
+    {
+      "code": "AUA",
+      "name": "Queen Beatrix International",
+      "city": "Aruba",
+      "country": "Aruba"
+    },
+    {
+      "code": "AVL",
+      "name": "Asheville Regional Airport",
+      "city": "Asheville (NC)",
+      "country": "USA"
+    },
+    {
+      "code": "ASB",
+      "name": "Ashgabat International Airport",
+      "city": "Ashgabat",
+      "country": "Turkmenistan"
+    },
+    {
+      "code": "ASM",
+      "name": "Asmara International Airport",
+      "city": "Asmara",
+      "country": "Eritrea"
+    },
+    {
+      "code": "ASE",
+      "name": "Aspen-Pitkin County Airport",
+      "city": "Aspen (CO)",
+      "country": "USA"
+    },
+    {
+      "code": "ATZ",
+      "name": "Assiut Airport",
+      "city": "Assiut",
+      "country": "Egypt"
+    },
+    {
+      "code": "TSE",
+      "name": "Astana International Airport",
+      "city": "Astana",
+      "country": "Kazakhstan"
+    },
+    {
+      "code": "ASU",
+      "name": "Silvio Pettirossi International Airport",
+      "city": "Asuncion",
+      "country": "Paraguay"
+    },
+    {
+      "code": "ASW",
+      "name": "Aswan International Airport",
+      "city": "Aswan",
+      "country": "Egypt"
+    },
+    {
+      "code": "ATH",
+      "name": "Athens International Airport",
+      "city": "Athens",
+      "country": "Greece"
+    },
+    {
+      "code": "HEW",
+      "name": "Athens Hellinikon Airport",
+      "city": "Athens",
+      "country": "Greece"
+    },
+    {
+      "code": "AHN",
+      "name": "Athens Ben Epps Airport",
+      "city": "Athens (GA)",
+      "country": "USA"
+    },
+    {
+      "code": "ATO",
+      "name": "Ohio University Airport",
+      "city": "Athens (OH)",
+      "country": "USA"
+    },
+    {
+      "code": "ATL",
+      "name": "Hartsfield-Jackson Atlanta International Airport",
+      "city": "Atlanta (GA)",
+      "country": "USA"
+    },
+    {
+      "code": "ACY",
+      "name": "Atlantic City International Airport",
+      "city": "Atlantic City (NJ)",
+      "country": "USA"
+    },
+    {
+      "code": "YAT",
+      "name": "Attawapiskat Airport",
+      "city": "Attawapiskat, NT",
+      "country": "Canada"
+    },
+    {
+      "code": "AKL",
+      "name": "Auckland International Airport",
+      "city": "Auckland",
+      "country": "New Zealand"
+    },
+    {
+      "code": "AGB",
+      "name": "Augsburg Airport",
+      "city": "Augsburg",
+      "country": "Germany"
+    },
+    {
+      "code": "AGS",
+      "name": "Augusta Regional Airport",
+      "city": "Augusta (GA)",
+      "country": "USA"
+    },
+    {
+      "code": "AUG",
+      "name": "Augusta State Airport",
+      "city": "Augusta (ME)",
+      "country": "USA"
+    },
+    {
+      "code": "AUR",
+      "name": "Aurillac Airport",
+      "city": "Aurillac",
+      "country": "France"
+    },
+    {
+      "code": "AUS",
+      "name": "Austin-Bergstrom International Airport",
+      "city": "Austin (TX)",
+      "country": "USA"
+    },
+    {
+      "code": "AYW",
+      "name": "Ayawasi Airport",
+      "city": "Ayawasi",
+      "country": "Indonesia"
+    },
+    {
+      "code": "AYQ",
+      "name": "Ayers Rock Airport",
+      "city": "Ayers Rock",
+      "country": "Australia"
+    },
+    {
+      "code": "AYR",
+      "name": "Ayr Airport",
+      "city": "Ayr",
+      "country": "Australia"
+    },
+    {
+      "code": "IBZ",
+      "name": "Ibiza Airport",
+      "city": "Ibiza",
+      "country": "Spain"
+    },
+    {
+      "code": "ICN",
+      "name": "Incheon International Airport",
+      "city": "Incheon",
+      "country": "Korea South"
+    },
+    {
+      "code": "IDA",
+      "name": "Idaho Falls Regional Airport",
+      "city": "Idaho Falls",
+      "country": "USA"
+    },
+    {
+      "code": "IFL",
+      "name": "Innisfail Airport",
+      "city": "Innisfail",
+      "country": "Australia"
+    },
+    {
+      "code": "IGH",
+      "name": "Ingham Airport",
+      "city": "Ingham",
+      "country": "Australia"
+    },
+    {
+      "code": "IGR",
+      "name": "Cataratas del Iguazú International Airport",
+      "city": "Iguazu",
+      "country": "Argentina"
+    },
+    {
+      "code": "IKT",
+      "name": "Irkutsk International Airport",
+      "city": "Irkutsk",
+      "country": "Russia"
+    },
+    {
+      "code": "ILI",
+      "name": "Iliamna Airport",
+      "city": "Iliamna",
+      "country": "USA"
+    },
+    {
+      "code": "ILP",
+      "name": "Ile des Pins Airport",
+      "city": "Ile des Pins",
+      "country": "New Caledonia"
+    },
+    {
+      "code": "ILY",
+      "name": "Islay Airport",
+      "city": "Islay",
+      "country": "United Kingdom"
+    },
+    {
+      "code": "IND",
+      "name": "Indianapolis International Airport",
+      "city": "Indianapolis",
+      "country": "USA"
+    },
+    {
+      "code": "INL",
+      "name": "Falls International Airport",
+      "city": "International Falls",
+      "country": "USA"
+    },
+    {
+      "code": "INN",
+      "name": "Innsbruck Airport",
+      "city": "Innsbruck",
+      "country": "Austria"
+    },
+    {
+      "code": "INV",
+      "name": "Inverness Airport",
+      "city": "Inverness",
+      "country": "United Kingdom"
+    },
+    {
+      "code": "IOM",
+      "name": "Isle of Man Airport",
+      "city": "Isle of Man",
+      "country": "United Kingdom"
+    },
+    {
+      "code": "IOU",
+      "name": "Ile Ouen Airport",
+      "city": "Ile Ouen",
+      "country": "New Caledonia"
+    },
+    {
+      "code": "IPL",
+      "name": "Imperial County Airport",
+      "city": "Imperial",
+      "country": "USA"
+    },
+    {
+      "code": "IQT",
+      "name": "Coronel FAP Francisco Secada Vignetta International Airport",
+      "city": "Iquitos",
+      "country": "Peru"
+    },
+    {
+      "code": "ISB",
+      "name": "Benazir Bhutto International Airport",
+      "city": "Islamabad",
+      "country": "Pakistan"
+    },
+    {
+      "code": "ISG",
+      "name": "New Ishigaki Airport",
+      "city": "Ishigaki",
+      "country": "Japan"
+    },
+    {
+      "code": "IST",
+      "name": "Istanbul Atatürk Airport",
+      "city": "Istanbul",
+      "country": "Turkey"
+    },
+    {
+      "code": "ITH",
+      "name": "Ithaca Tompkins Regional Airport",
+      "city": "Ithaca",
+      "country": "USA"
+    },
+    {
+      "code": "IVC",
+      "name": "Invercargill Airport",
+      "city": "Invercargill",
+      "country": "New Zealand"
+    },
+    {
+      "code": "IVL",
+      "name": "Ivalo Airport",
+      "city": "Ivalo",
+      "country": "Finland"
+    },
+    {
+      "code": "IYK",
+      "name": "Inyokern Airport",
+      "city": "Inyokern",
+      "country": "USA"
+    },
+    {
+      "code": "IZM",
+      "name": "Izmir Airport",
+      "city": "Izmir",
+      "country": "Turkey"
+    },
+    {
+      "code": "SAW",
+      "name": "Istanbul Sabiha Gokcen International Airport",
+      "city": "Istanbul",
+      "country": "Turkey"
+    },
+    {
+      "code": "YEV",
+      "name": "Inuvik Mike Zubko Airport",
+      "city": "Inuvik",
+      "country": "Canada"
+    },
+    {
+      "code": "YFB",
+      "name": "Iqaluit Airport",
+      "city": "Iqaluit",
+      "country": "Canada"
+    },
+    {
+      "code": "ZIH",
+      "name": "Ixtapa-Zihuatanejo International Airport",
+      "city": "Ixtapa/Zihuatenejo",
+      "country": "Mexico"
+    }
+  ]
+} 
