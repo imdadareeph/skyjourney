@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Menu, User, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,16 +10,19 @@ import {
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
 
-  // Add scroll event listener
-  if (typeof window !== "undefined") {
-    window.addEventListener("scroll", () => {
+  // Add scroll event listener using useEffect
+  useEffect(() => {
+    const handleScroll = () => {
       if (window.scrollY > 0) {
         setIsScrolled(true);
       } else {
         setIsScrolled(false);
       }
-    });
-  }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const navLinks = [
     { label: "Book", href: "#" },
@@ -30,8 +33,8 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? "bg-white shadow-md" : "bg-transparent"
+      className={`w-full fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled ? "bg-white/95 backdrop-blur-sm shadow-md" : "bg-transparent"
       }`}
     >
       <div className="container max-w-7xl mx-auto px-4">
@@ -65,8 +68,8 @@ const Navbar = () => {
           <div className="hidden md:flex items-center space-x-4">
             <Button
               variant={isScrolled ? "outline" : "secondary"}
-              className={`text-black ${
-                !isScrolled ? "hover:bg-white" : ""
+              className={`${
+                !isScrolled ? "bg-white/10 hover:bg-white/20 text-white border-white/20" : ""
               }`}
             >
               <LogIn className="mr-2 h-4 w-4" />

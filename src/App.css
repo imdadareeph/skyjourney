@@ -1,42 +1,91 @@
+/* Reset container styles */
 #root {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Custom styles for the flight search application */
+.container {
+  width: 100%;
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  padding: 0 1rem;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* Full-width container for navbar and hero sections */
+.full-width-container {
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Hero section styles */
+.hero-section {
+  width: 100%;
+  min-height: 600px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  margin-top: -80px; /* Offset for navbar */
+  padding-top: 80px; /* Add padding to compensate for navbar */
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.6));
+  pointer-events: none;
 }
 
-.card {
-  padding: 2em;
+/* Flight card hover effect */
+.flight-card {
+  transition: all 0.3s ease;
 }
 
-.read-the-docs {
-  color: #888;
+.flight-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+/* Plane icon animation */
+.plane-icon {
+  transition: transform 0.3s ease;
+}
+
+.flight-card:hover .plane-icon {
+  transform: translateY(-2px);
+}
+
+/* Price highlight animation */
+.price-highlight {
+  transition: color 0.3s ease;
+}
+
+.flight-card:hover .price-highlight {
+  color: var(--primary);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }

@@ -1,0 +1,206 @@
+{
+  "flights": [
+    {
+      "id": "EK003",
+      "departureTime": "14:15",
+      "arrivalTime": "18:40",
+      "departureCode": "DXB",
+      "arrivalCode": "LHR",
+      "stopType": "Non-stop",
+      "aircraft": "Airbus A380",
+      "classes": {
+        "economy": {
+          "duration": "7 hrs 25 mins",
+          "fares": [
+            {
+              "fareType": "Special",
+              "price": 1850,
+              "baggage": "30kg",
+              "cabinBaggage": "7kg",
+              "seatSelection": "Chargeable",
+              "changeFee": "AED 400",
+              "refundFee": "Non-refundable",
+              "skywardsMiles": "Up to 3000"
+            },
+            {
+              "fareType": "Flex",
+              "price": 2060,
+              "baggage": "35kg",
+              "cabinBaggage": "7kg",
+              "seatSelection": "Free",
+              "changeFee": "AED 200",
+              "refundFee": "AED 300",
+              "skywardsMiles": "Up to 4000"
+            }
+          ]
+        },
+        "premiumEconomy": {
+          "duration": "7 hrs 10 mins",
+          "fares": [
+            {
+              "fareType": "Flex Plus",
+              "price": 4500,
+              "baggage": "40kg",
+              "cabinBaggage": "10kg",
+              "seatSelection": "Free",
+              "changeFee": "Free",
+              "refundFee": "AED 200",
+              "skywardsMiles": "Up to 6000"
+            }
+          ]
+        },
+        "business": {
+          "duration": "6 hrs 55 mins",
+          "fares": [
+            {
+              "fareType": "Special",
+              "price": 12500,
+              "baggage": "40kg",
+              "cabinBaggage": "15kg",
+              "seatSelection": "Free",
+              "changeFee": "AED 400",
+              "refundFee": "AED 600",
+              "skywardsMiles": "Up to 12000"
+            },
+            {
+              "fareType": "Flex",
+              "price": 14800,
+              "baggage": "45kg",
+              "cabinBaggage": "15kg",
+              "seatSelection": "Free",
+              "changeFee": "Free",
+              "refundFee": "Free",
+              "skywardsMiles": "Up to 15000"
+            }
+          ]
+        },
+        "first": {
+          "duration": "6 hrs 45 mins",
+          "fares": [
+            {
+              "fareType": "Special",
+              "price": 23000,
+              "baggage": "50kg",
+              "cabinBaggage": "20kg",
+              "seatSelection": "Free",
+              "changeFee": "Free",
+              "refundFee": "AED 800",
+              "skywardsMiles": "Up to 18000"
+            },
+            {
+              "fareType": "Flex",
+              "price": 26500,
+              "baggage": "50kg",
+              "cabinBaggage": "20kg",
+              "seatSelection": "Free",
+              "changeFee": "Free",
+              "refundFee": "Free",
+              "skywardsMiles": "Up to 20000"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "EK001",
+      "departureTime": "08:45",
+      "arrivalTime": "13:10",
+      "departureCode": "DXB",
+      "arrivalCode": "LHR",
+      "stopType": "Non-stop",
+      "aircraft": "Airbus A380",
+      "classes": {
+        "economy": {
+          "duration": "7 hrs 25 mins",
+          "fares": [
+            {
+              "fareType": "Special",
+              "price": 1750,
+              "baggage": "30kg",
+              "cabinBaggage": "7kg",
+              "seatSelection": "Chargeable",
+              "changeFee": "AED 400",
+              "refundFee": "Non-refundable",
+              "skywardsMiles": "Up to 3000"
+            },
+            {
+              "fareType": "Flex",
+              "price": 1950,
+              "baggage": "35kg",
+              "cabinBaggage": "7kg",
+              "seatSelection": "Free",
+              "changeFee": "AED 200",
+              "refundFee": "AED 300",
+              "skywardsMiles": "Up to 4000"
+            }
+          ]
+        },
+        "premiumEconomy": {
+          "duration": "7 hrs 10 mins",
+          "fares": [
+            {
+              "fareType": "Flex Plus",
+              "price": 4200,
+              "baggage": "40kg",
+              "cabinBaggage": "10kg",
+              "seatSelection": "Free",
+              "changeFee": "Free",
+              "refundFee": "AED 200",
+              "skywardsMiles": "Up to 6000"
+            }
+          ]
+        },
+        "business": {
+          "duration": "6 hrs 55 mins",
+          "fares": [
+            {
+              "fareType": "Special",
+              "price": 11800,
+              "baggage": "40kg",
+              "cabinBaggage": "15kg",
+              "seatSelection": "Free",
+              "changeFee": "AED 400",
+              "refundFee": "AED 600",
+              "skywardsMiles": "Up to 12000"
+            },
+            {
+              "fareType": "Flex",
+              "price": 13900,
+              "baggage": "45kg",
+              "cabinBaggage": "15kg",
+              "seatSelection": "Free",
+              "changeFee": "Free",
+              "refundFee": "Free",
+              "skywardsMiles": "Up to 15000"
+            }
+          ]
+        },
+        "first": {
+          "duration": "6 hrs 45 mins",
+          "fares": [
+            {
+              "fareType": "Special",
+              "price": 22000,
+              "baggage": "50kg",
+              "cabinBaggage": "20kg",
+              "seatSelection": "Free",
+              "changeFee": "Free",
+              "refundFee": "AED 800",
+              "skywardsMiles": "Up to 18000"
+            },
+            {
+              "fareType": "Flex",
+              "price": 25000,
+              "baggage": "50kg",
+              "cabinBaggage": "20kg",
+              "seatSelection": "Free",
+              "changeFee": "Free",
+              "refundFee": "Free",
+              "skywardsMiles": "Up to 20000"
+            }
+          ]
+        }
+      }
+    }
+  ]
+} 
