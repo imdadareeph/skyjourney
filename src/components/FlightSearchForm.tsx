@@ -1,258 +1,236 @@
+import React, { useState } from 'react'
+import { Button } from "@/components/ui/button"
+import { Calendar } from "@/components/ui/calendar"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { cn } from "@/lib/utils"
+import { format } from "date-fns"
+import { Calendar as CalendarIcon, Plane, User } from "lucide-react"
+import Select, { StylesConfig } from 'react-select'
+import airportConfig from '@/config/airportConfig.json'
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Label } from "@/components/ui/label"
 
-import { useState } from "react";
-import { Calendar, PlaneLanding, PlaneTakeoff, Users } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-} from "@/components/ui/card";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-
-const airports = [
-  { code: "DXB", name: "Dubai International", city: "Dubai" },
-  { code: "LHR", name: "Heathrow", city: "London" },
-  { code: "JFK", name: "John F. Kennedy", city: "New York" },
-  { code: "DEL", name: "Indira Gandhi International", city: "Delhi" },
-  { code: "BOM", name: "Chhatrapati Shivaji", city: "Mumbai" },
-  { code: "SIN", name: "Changi", city: "Singapore" },
-  { code: "LAX", name: "Los Angeles International", city: "Los Angeles" },
-  { code: "CDG", name: "Charles de Gaulle", city: "Paris" },
-];
-
-interface PassengerCount {
-  adults: number;
-  children: number;
-  teens: number;
+interface Airport {
+  code: string
+  name: string
+  city: string
+  country: string
 }
 
-const FlightSearchForm = () => {
-  const [tripType, setTripType] = useState("roundTrip");
-  const [fromAirport, setFromAirport] = useState("");
-  const [toAirport, setToAirport] = useState("");
-  const [openPassengers, setOpenPassengers] = useState(false);
-  const [passengers, setPassengers] = useState<PassengerCount>({
-    adults: 1,
-    children: 0,
-    teens: 0,
-  });
+interface AirportOption {
+  value: string
+  label: string
+  airport: Airport
+}
 
-  const totalPassengers = passengers.adults + passengers.children + passengers.teens;
+type TripType = 'round-trip' | 'one-way' | 'multi-city';
 
-  const updatePassengers = (type: keyof PassengerCount, value: number) => {
-    setPassengers(prev => ({
-      ...prev,
-      [type]: Math.max(type === 'adults' ? 1 : 0, Math.min(9, value))
-    }));
-  };
+export default function FlightSearchForm() {
+  const [tripType, setTripType] = useState<TripType>('round-trip')
+  const [date, setDate] = useState<Date>()
+  const [returnDate, setReturnDate] = useState<Date>()
+  const [origin, setOrigin] = useState<AirportOption | null>(null)
+  const [destination, setDestination] = useState<AirportOption | null>(null)
+  const [passengers, setPassengers] = useState(1)
+
+  const airportOptions: AirportOption[] = airportConfig.airports.map(airport => ({
+    value: airport.code,
+    label: `${airport.code} - ${airport.city} (${airport.name})`,
+    airport: airport
+  }))
+
+  const customStyles: StylesConfig<AirportOption, false> = {
+    control: (base) => ({
+      ...base,
+      borderWidth: '2px',
+      borderRadius: '0.5rem',
+      minHeight: '40px',
+      backgroundColor: 'white'
+    }),
+    option: (base, state) => ({
+      ...base,
+      padding: '8px 12px',
+      backgroundColor: state.isSelected ? '#f3f4f6' : 'white',
+      color: 'black',
+      '&:hover': {
+        backgroundColor: '#f3f4f6'
+      }
+    }),
+    menu: (base) => ({
+      ...base,
+      backgroundColor: 'white',
+      zIndex: 999
+    })
+  }
 
   return (
-    <Card className="w-full max-w-4xl backdrop-blur-sm bg-white/90 shadow-lg animate-fade-in">
-      <CardContent className="p-6">
-        <div className="space-y-6">
-          <RadioGroup
-            defaultValue="roundTrip"
-            className="flex space-x-4"
-            onValueChange={setTripType}
-          >
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="roundTrip" id="roundTrip" />
-              <Label htmlFor="roundTrip">Round trip</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="oneWay" id="oneWay" />
-              <Label htmlFor="oneWay">One way</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="multiCity" id="multiCity" />
-              <Label htmlFor="multiCity">Multi-city</Label>
-            </div>
-          </RadioGroup>
+    <div className="w-full max-w-4xl mx-auto p-8 space-y-6 bg-white rounded-xl shadow-sm">
+      {/* Trip Type Selection */}
+      <RadioGroup 
+        defaultValue="round-trip" 
+        className="flex gap-6"
+        onValueChange={(value) => setTripType(value as TripType)}
+      >
+        <div className="flex items-center space-x-2">
+          <RadioGroupItem value="round-trip" id="round-trip" />
+          <Label htmlFor="round-trip">Round trip</Label>
+        </div>
+        <div className="flex items-center space-x-2">
+          <RadioGroupItem value="one-way" id="one-way" />
+          <Label htmlFor="one-way">One way</Label>
+        </div>
+        <div className="flex items-center space-x-2">
+          <RadioGroupItem value="multi-city" id="multi-city" />
+          <Label htmlFor="multi-city">Multi-city</Label>
+        </div>
+      </RadioGroup>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label>From</Label>
-              <div className="relative">
-                <PlaneTakeoff className="absolute left-3 top-3 h-4 w-4 text-gray-500 z-10" />
-                <Select value={fromAirport} onValueChange={setFromAirport}>
-                  <SelectTrigger className="w-full pl-10">
-                    <SelectValue placeholder="Select departure airport" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white">
-                    {airports.map((airport) => (
-                      <SelectItem 
-                        key={airport.code} 
-                        value={airport.code}
-                        className="hover:bg-gray-100"
-                      >
-                        <span className="font-medium">{airport.code}</span> -{" "}
-                        {airport.city} ({airport.name})
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label>To</Label>
-              <div className="relative">
-                <PlaneLanding className="absolute left-3 top-3 h-4 w-4 text-gray-500 z-10" />
-                <Select value={toAirport} onValueChange={setToAirport}>
-                  <SelectTrigger className="w-full pl-10">
-                    <SelectValue placeholder="Select arrival airport" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white">
-                    {airports.map((airport) => (
-                      <SelectItem 
-                        key={airport.code} 
-                        value={airport.code}
-                        className="hover:bg-gray-100"
-                      >
-                        <span className="font-medium">{airport.code}</span> -{" "}
-                        {airport.city} ({airport.name})
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div className="space-y-2">
-              <Label>Departure</Label>
-              <div className="relative">
-                <Calendar className="absolute left-3 top-3 h-4 w-4 text-gray-500" />
-                <input type="date" className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm pl-10 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
-              </div>
-            </div>
-            {tripType === "roundTrip" && (
-              <div className="space-y-2">
-                <Label>Return</Label>
-                <div className="relative">
-                  <Calendar className="absolute left-3 top-3 h-4 w-4 text-gray-500" />
-                  <input type="date" className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm pl-10 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* From and To Section */}
+        <div>
+          <Label>From</Label>
+          <div className="mt-1">
+            <Select
+              value={origin}
+              onChange={(option) => setOrigin(option)}
+              options={airportOptions.filter(opt => opt.value !== destination?.value)}
+              styles={customStyles}
+              placeholder={
+                <div className="flex items-center">
+                  <Plane className="mr-2 h-4 w-4 shrink-0" />
+                  Select departure airport
                 </div>
-              </div>
-            )}
-            <div className="space-y-2">
-              <Label>Passengers</Label>
-              <Popover open={openPassengers} onOpenChange={setOpenPassengers}>
-                <PopoverTrigger asChild>
+              }
+              isClearable
+              isSearchable
+            />
+          </div>
+        </div>
+
+        <div>
+          <Label>To</Label>
+          <div className="mt-1">
+            <Select
+              value={destination}
+              onChange={(option) => setDestination(option)}
+              options={airportOptions.filter(opt => opt.value !== origin?.value)}
+              styles={customStyles}
+              placeholder={
+                <div className="flex items-center">
+                  <Plane className="mr-2 h-4 w-4 shrink-0" />
+                  Select arrival airport
+                </div>
+              }
+              isClearable
+              isSearchable
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {/* Departure Date */}
+        <div>
+          <Label>Departure</Label>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                className={cn(
+                  "w-full justify-start text-left font-normal border-2 mt-1",
+                  !date && "text-muted-foreground"
+                )}
+              >
+                <CalendarIcon className="mr-2 h-4 w-4" />
+                {date ? format(date, "dd/MM/yyyy") : <span>dd/mm/yyyy</span>}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0 bg-white" align="start">
+              <Calendar
+                mode="single"
+                selected={date}
+                onSelect={setDate}
+                initialFocus
+                className="bg-white"
+              />
+            </PopoverContent>
+          </Popover>
+        </div>
+
+        {/* Return Date */}
+        {tripType === 'round-trip' && (
+          <div>
+            <Label>Return</Label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  className={cn(
+                    "w-full justify-start text-left font-normal border-2 mt-1",
+                    !returnDate && "text-muted-foreground"
+                  )}
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  {returnDate ? format(returnDate, "dd/MM/yyyy") : <span>dd/mm/yyyy</span>}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0 bg-white" align="start">
+                <Calendar
+                  mode="single"
+                  selected={returnDate}
+                  onSelect={setReturnDate}
+                  initialFocus
+                  className="bg-white"
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
+        )}
+
+        {/* Passengers */}
+        <div>
+          <Label>Passengers</Label>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                className="w-full justify-start text-left font-normal border-2 mt-1"
+              >
+                <User className="mr-2 h-4 w-4" />
+                {passengers} {passengers === 1 ? 'passenger' : 'passengers'}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-80 p-4 bg-white">
+              <div className="flex items-center justify-between">
+                <div className="flex-1">
+                  <Label>Number of passengers</Label>
+                </div>
+                <div className="flex items-center space-x-2">
                   <Button
                     variant="outline"
-                    role="combobox"
-                    className="w-full justify-between"
+                    size="icon"
+                    onClick={() => setPassengers(Math.max(1, passengers - 1))}
                   >
-                    <div className="flex items-center">
-                      <Users className="mr-2 h-4 w-4 shrink-0 opacity-50" />
-                      {totalPassengers} {totalPassengers === 1 ? 'passenger' : 'passengers'}
-                    </div>
+                    -
                   </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-80 bg-white p-4">
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="font-medium">Adults</p>
-                        <p className="text-sm text-gray-500">Ages 18+</p>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => updatePassengers('adults', passengers.adults - 1)}
-                          disabled={passengers.adults <= 1}
-                        >
-                          -
-                        </Button>
-                        <span className="w-8 text-center">{passengers.adults}</span>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => updatePassengers('adults', passengers.adults + 1)}
-                          disabled={passengers.adults >= 9}
-                        >
-                          +
-                        </Button>
-                      </div>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="font-medium">Teens</p>
-                        <p className="text-sm text-gray-500">Ages 12-17</p>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => updatePassengers('teens', passengers.teens - 1)}
-                          disabled={passengers.teens <= 0}
-                        >
-                          -
-                        </Button>
-                        <span className="w-8 text-center">{passengers.teens}</span>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => updatePassengers('teens', passengers.teens + 1)}
-                          disabled={passengers.teens >= 9}
-                        >
-                          +
-                        </Button>
-                      </div>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="font-medium">Children</p>
-                        <p className="text-sm text-gray-500">Ages 2-11</p>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => updatePassengers('children', passengers.children - 1)}
-                          disabled={passengers.children <= 0}
-                        >
-                          -
-                        </Button>
-                        <span className="w-8 text-center">{passengers.children}</span>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => updatePassengers('children', passengers.children + 1)}
-                          disabled={passengers.children >= 9}
-                        >
-                          +
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                </PopoverContent>
-              </Popover>
-            </div>
-          </div>
-
-          <Button className="w-full bg-accent hover:bg-accent/90 text-white">
-            Search flights
-          </Button>
+                  <span className="min-w-[3ch] text-center">{passengers}</span>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => setPassengers(passengers + 1)}
+                  >
+                    +
+                  </Button>
+                </div>
+              </div>
+            </PopoverContent>
+          </Popover>
         </div>
-      </CardContent>
-    </Card>
-  );
-};
+      </div>
 
-export default FlightSearchForm;
+      <Button className="w-full bg-red-500 hover:bg-red-600 text-white" size="lg">
+        Search flights
+      </Button>
+    </div>
+  )
+}
