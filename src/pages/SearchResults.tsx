@@ -1,9 +1,15 @@
 import React, { useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogClose,
+} from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { format } from 'date-fns'
-import { ChevronDown, ChevronUp, Plane, Check } from 'lucide-react'
+import { ChevronDown, ChevronUp, Plane, Check, ChevronLeft, ChevronRight } from 'lucide-react'
 import flightData from '@/data/flightData.json'
 import Footer from '@/components/Footer'
 
@@ -76,165 +82,199 @@ export default function SearchResults() {
 
     return (
       <div className="space-y-4">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold">
-            {type === 'outbound' ? 'Outbound Flight' : 'Return Flight'}
-            <span className="text-sm font-normal text-gray-600 ml-2">
-              {format(new Date(type === 'outbound' ? searchParams.departureDate : searchParams.returnDate!), "EEE, d MMM yyyy")}
-            </span>
-          </h2>
-          {selectedFlight && (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                if (type === 'outbound') {
-                  setSelectedOutbound(null);
-                } else {
-                  setSelectedInbound(null);
-                }
-                setExpandedFlightId(null);
-              }}
-            >
-              Change flight
+        <div className="flex items-center justify-between">
+          <div className="text-2xl">
+            Thursday, 10 April 2025
+            <span className="text-sm text-gray-600 ml-2">(6 options)</span>
+          </div>
+          <div className="flex gap-2">
+            <Button variant="outline" size="icon" className="rounded-full w-8 h-8">
+              <ChevronLeft className="h-4 w-4" />
             </Button>
-          )}
+            <Button variant="outline" size="icon" className="rounded-full w-8 h-8">
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
+
+        <div className="flex items-center gap-4 mt-6">
+          <div className="text-sm text-gray-600">Show prices for:</div>
+          <div className="flex gap-2">
+            {['economy', 'premiumEconomy', 'business', 'first'].map((classType) => (
+              <Button
+                key={classType}
+                variant={selectedClass === classType ? 'default' : 'outline'}
+                onClick={() => {
+                  setSelectedClass(classType)
+                  setSelectedOutbound(null)
+                  setSelectedInbound(null)
+                  setExpandedFlightId(null)
+                }}
+                className={`rounded-full px-6 ${
+                  selectedClass === classType 
+                    ? 'bg-[#0078D2] hover:bg-[#0078D2] text-white border-none' 
+                    : 'border-gray-300'
+                }`}
+              >
+                {classType === 'premiumEconomy' ? 'Premium Economy' : 
+                  classType.charAt(0).toUpperCase() + classType.slice(1)}
+              </Button>
+            ))}
+          </div>
+        </div>
+
         {flights.map((flight) => (
           <div
             key={`${flight.id}-${type}`}
-            className={`flight-card bg-white rounded-lg shadow transition-all ${
+            className={`mt-6 bg-white rounded-lg border ${
               (type === 'outbound' ? selectedOutbound?.flightId : selectedInbound?.flightId) === flight.id 
-                ? 'border-2 border-green-500' 
-                : ''
+                ? 'border-[#2B8000]' 
+                : 'border-gray-200'
             }`}
           >
-            {/* Flight Header */}
             <div className="p-6">
-              <div className="grid grid-cols-12 gap-4">
-                {/* Time and Route */}
-                <div className="col-span-4">
-                  <div className="flex items-center gap-4">
+              <div className="flex items-center justify-between">
+                <div className="flex-1">
+                  <div className="flex items-center gap-8">
                     <div>
-                      <div className="text-xl font-semibold">{flight.departureTime}</div>
-                      <div className="text-sm text-gray-600">
-                        {type === 'outbound' ? searchParams.departureCode : searchParams.arrivalCode}
+                      <div className="text-2xl font-semibold">{flight.departureTime}</div>
+                      <div className="text-gray-600">{type === 'outbound' ? 'DXB' : 'LHR'}</div>
+                      <div className="text-sm text-gray-600">{type === 'outbound' ? 'Dubai' : 'London Heathrow'}</div>
+                    </div>
+
+                    <div className="flex-1 relative">
+                      <div className="border-t border-gray-300 w-full absolute top-4"></div>
+                      <div className="text-sm text-gray-600 text-center mt-6">
+                        {flight.classes[selectedClass].duration}
+                      </div>
+                      <div className="text-sm text-gray-600 text-center">
+                        Non-stop
                       </div>
                     </div>
-                    <div className="flex-1 border-t-2 border-gray-300 relative">
-                      <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                        <Plane className={`plane-icon w-5 h-5 text-gray-400 ${type === 'inbound' ? 'rotate-180' : ''}`} />
-                      </div>
-                    </div>
+
                     <div>
-                      <div className="text-xl font-semibold">{flight.arrivalTime}</div>
-                      <div className="text-sm text-gray-600">
-                        {type === 'outbound' ? searchParams.arrivalCode : searchParams.departureCode}
-                      </div>
+                      <div className="text-2xl font-semibold">{flight.arrivalTime}</div>
+                      <div className="text-gray-600">{type === 'outbound' ? 'LHR' : 'DXB'}</div>
+                      <div className="text-sm text-gray-600">{type === 'outbound' ? 'London Heathrow' : 'Dubai'}</div>
                     </div>
                   </div>
-                  <div className="mt-2 text-sm text-gray-600">
-                    {flight.classes[selectedClass].duration} • {flight.stopType}
+
+                  <div className="mt-4">
+                    <div className="text-sm text-gray-600">Flight number</div>
+                    <div className="font-medium">{flight.id}</div>
                   </div>
                 </div>
 
-                {/* Flight Details */}
-                <div className="col-span-4">
-                  <div className="text-sm">
-                    <div>Flight {flight.id}</div>
-                    <div>{flight.aircraft}</div>
-                  </div>
-                </div>
-
-                {/* Price and Select */}
-                <div className="col-span-4 text-right">
-                  <div className="price-highlight text-2xl font-semibold">
-                    AED {flight.classes[selectedClass].fares[0].price}
-                  </div>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => toggleExpand(flight.id)}
-                    className="mt-2"
-                  >
-                    {expandedFlightId === flight.id ? (
-                      <>
-                        Hide details <ChevronUp className="ml-1 h-4 w-4" />
-                      </>
-                    ) : (
-                      <>
-                        Show details <ChevronDown className="ml-1 h-4 w-4" />
-                      </>
-                    )}
-                  </Button>
+                <div className="text-right">
+                  {((type === 'outbound' ? selectedOutbound?.flightId : selectedInbound?.flightId) === flight.id) ? (
+                    <div>
+                      <div className="flex items-center justify-end gap-2 mb-2">
+                        <div className="w-2 h-2 rounded-full bg-[#2B8000]"></div>
+                        <span className="text-[#2B8000]">Selected</span>
+                      </div>
+                      <div className="text-sm mb-4">
+                        {selectedClass === 'premiumEconomy' ? 'Premium Economy' : 
+                          selectedClass.charAt(0).toUpperCase() + selectedClass.slice(1)} • {
+                          type === 'outbound' ? selectedOutbound?.fareType : selectedInbound?.fareType
+                        }
+                      </div>
+                      <Button
+                        variant="link"
+                        className="text-[#0078D2] p-0 h-auto text-sm"
+                        onClick={() => {
+                          if (type === 'outbound') {
+                            setSelectedOutbound(null);
+                          } else {
+                            setSelectedInbound(null);
+                          }
+                        }}
+                      >
+                        Change selection
+                      </Button>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="text-sm text-gray-600 mb-1">Economy Class</div>
+                      <div className="text-2xl font-semibold mb-1">
+                        from AED {flight.classes[selectedClass].fares[0].price.toLocaleString()}
+                      </div>
+                      <div className="text-sm text-gray-600">Lowest price</div>
+                      <Button
+                        variant="link"
+                        className="text-[#0078D2] p-0 h-auto text-sm mt-2"
+                        onClick={() => toggleExpand(flight.id)}
+                      >
+                        {expandedFlightId === flight.id ? (
+                          <>Hide details</>
+                        ) : (
+                          <>Show details</>
+                        )}
+                        <ChevronDown className={`ml-1 h-4 w-4 transition-transform ${
+                          expandedFlightId === flight.id ? 'rotate-180' : ''
+                        }`} />
+                      </Button>
+                    </>
+                  )}
                 </div>
               </div>
 
               {/* Expanded Details */}
               {expandedFlightId === flight.id && (
-                <div className="mt-6 border-t pt-6">
+                <div className="mt-6 pt-6 border-t border-gray-200">
                   <div className="grid grid-cols-2 gap-6">
                     {flight.classes[selectedClass].fares.map((fare) => (
                       <div
                         key={fare.fareType}
-                        className="border rounded-lg p-4 hover:border-primary"
+                        className={`border rounded-lg p-6 transition-colors ${
+                          (type === 'outbound' ? selectedOutbound?.fareType : selectedInbound?.fareType) === fare.fareType
+                            ? 'border-[#2B8000] bg-[#2B8000]/5'
+                            : 'border-gray-200 hover:border-[#0078D2]'
+                        }`}
                       >
-                        <div className="flex justify-between items-center mb-4">
+                        <div className="flex justify-between items-center mb-6">
                           <h3 className="text-lg font-semibold">{fare.fareType}</h3>
-                          <div className="text-xl font-bold">AED {fare.price}</div>
+                          <div className="text-xl font-bold">AED {fare.price.toLocaleString()}</div>
                         </div>
-                        <div className="space-y-2 text-sm">
+                        <div className="space-y-4 text-sm">
                           <div className="flex justify-between">
-                            <span>Baggage</span>
-                            <span>{fare.baggage}</span>
+                            <span className="text-gray-600">Baggage</span>
+                            <span className="font-medium">{fare.baggage}</span>
                           </div>
                           <div className="flex justify-between">
-                            <span>Cabin baggage</span>
-                            <span>{fare.cabinBaggage}</span>
+                            <span className="text-gray-600">Cabin baggage</span>
+                            <span className="font-medium">{fare.cabinBaggage}</span>
                           </div>
                           <div className="flex justify-between">
-                            <span>Seat selection</span>
-                            <span>{fare.seatSelection}</span>
+                            <span className="text-gray-600">Seat selection</span>
+                            <span className="font-medium">{fare.seatSelection}</span>
                           </div>
                           <div className="flex justify-between">
-                            <span>Change fee</span>
-                            <span>{fare.changeFee}</span>
+                            <span className="text-gray-600">Change fee</span>
+                            <span className="font-medium">{fare.changeFee}</span>
                           </div>
                           <div className="flex justify-between">
-                            <span>Refund fee</span>
-                            <span>{fare.refundFee}</span>
+                            <span className="text-gray-600">Refund fee</span>
+                            <span className="font-medium">{fare.refundFee}</span>
                           </div>
                           <div className="flex justify-between">
-                            <span>Skywards Miles</span>
-                            <span>{fare.skywardsMiles}</span>
+                            <span className="text-gray-600">Skywards Miles</span>
+                            <span className="font-medium">{fare.skywardsMiles}</span>
                           </div>
                         </div>
                         <Button
-                          className="w-full mt-4"
+                          className={`w-full mt-6 ${
+                            (type === 'outbound' ? selectedOutbound?.fareType : selectedInbound?.fareType) === fare.fareType
+                              ? 'bg-[#2B8000] hover:bg-[#2B8000]/90'
+                              : 'bg-[#0078D2] hover:bg-[#0078D2]/90'
+                          }`}
                           onClick={() => handleSelectFare(flight.id, fare.fareType, fare.price, type)}
                         >
-                          Select
+                          {(type === 'outbound' ? selectedOutbound?.fareType : selectedInbound?.fareType) === fare.fareType
+                            ? 'Selected'
+                            : 'Select'}
                         </Button>
                       </div>
                     ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Selected Flight Summary */}
-              {((type === 'outbound' ? selectedOutbound?.flightId : selectedInbound?.flightId) === flight.id) && !expandedFlightId && (
-                <div className="mt-4 pt-4 border-t">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <span className="font-semibold">Selected: </span>
-                      {selectedClass === 'premiumEconomy' ? 'Premium Economy' : 
-                        selectedClass.charAt(0).toUpperCase() + selectedClass.slice(1)} • {
-                        type === 'outbound' ? selectedOutbound?.fareType : selectedInbound?.fareType
-                      }
-                    </div>
-                    <div className="text-lg font-semibold">
-                      AED {(type === 'outbound' ? selectedOutbound?.price : selectedInbound?.price)?.toLocaleString()}
-                    </div>
                   </div>
                 </div>
               )}
@@ -247,51 +287,44 @@ export default function SearchResults() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header Section */}
-      <div className="bg-white shadow">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex flex-col space-y-4">
-            <div className="flex justify-between items-center">
-              <div>
-                <div className="text-2xl font-bold">
-                  {searchParams.departureCode} → {searchParams.arrivalCode}
-                  {searchParams.tripType === 'round-trip' && ` → ${searchParams.departureCode}`}
-                </div>
-                <div className="text-gray-600">
-                  {format(new Date(searchParams.departureDate), "EEE, d MMM yyyy")}
-                  {searchParams.tripType === 'round-trip' && searchParams.returnDate && (
-                    <> - {format(new Date(searchParams.returnDate), "EEE, d MMM yyyy")}</>
-                  )}
-                </div>
+      {/* Itinerary Bar */}
+      <div className="bg-white border-b">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-6">
+              <div className="flex items-center gap-2 text-lg">
+                <span className="font-medium">Dubai (DXB)</span>
+                <span className="text-gray-400">→</span>
+                <span className="font-medium">London Heathrow (LHR)</span>
               </div>
-              <div className="text-right">
-                <Button 
-                  variant="outline" 
-                  size="lg" 
-                  onClick={() => setShowSummary(true)}
-                  disabled={!isComplete}
-                >
-                  View summary
-                </Button>
+              <div className="flex items-center text-sm text-gray-600">
+                <span>•</span>
+                <span className="mx-2">{searchParams.tripType === 'one-way' ? 'One way' : 'Round trip'}</span>
+                <span>•</span>
+                <span className="ml-2">{searchParams.passengers} passenger{searchParams.passengers > 1 ? 's' : ''}</span>
               </div>
+              <Button variant="link" className="text-[#0078D2] p-0 h-auto text-sm">
+                Change search
+              </Button>
             </div>
-            <div className="flex justify-between items-center">
-              <div className="text-gray-600">
-                {searchParams.tripType === 'one-way' ? 'One way' : 'Round trip'} • {searchParams.passengers} passenger{searchParams.passengers > 1 ? 's' : ''}
+            <div className="flex items-center gap-6">
+              <div className="text-sm">
+                <span className="text-gray-600">Cost</span>
+                <span className="ml-2 text-xl font-semibold">
+                  AED {isComplete ? totalPrice.toLocaleString() : Math.min(...flightData.flights.map(f => 
+                    f.classes[selectedClass].fares[0].price
+                  )).toLocaleString()}
+                </span>
               </div>
-              <div className="text-gray-600">
-                {isComplete ? (
-                  <span className="text-primary font-semibold">
-                    Selected: AED {totalPrice.toLocaleString()}
-                  </span>
-                ) : (
-                  <span>
-                    from AED {Math.min(...flightData.flights.map(f => 
-                      f.classes[selectedClass].fares[0].price
-                    )).toLocaleString()}
-                  </span>
-                )}
-              </div>
+              <Button 
+                variant="outline" 
+                className="border-[#0078D2] text-[#0078D2] hover:bg-[#0078D2] hover:text-white"
+                onClick={() => setShowSummary(true)}
+                disabled={!isComplete}
+              >
+                View summary
+                <ChevronDown className="ml-2 h-4 w-4" />
+              </Button>
             </div>
           </div>
         </div>
@@ -299,175 +332,187 @@ export default function SearchResults() {
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-8">
-        {/* Class Selection */}
-        <div className="mb-6 bg-white rounded-lg p-4 shadow">
-          <div className="flex gap-4">
-            {['economy', 'premiumEconomy', 'business', 'first'].map((classType) => (
-              <Button
-                key={classType}
-                variant={selectedClass === classType ? 'default' : 'outline'}
-                onClick={() => {
-                  setSelectedClass(classType)
-                  setSelectedOutbound(null)
-                  setSelectedInbound(null)
-                  setExpandedFlightId(null)
-                }}
-                className="flex-1"
-              >
-                {classType === 'premiumEconomy' ? 'Premium Economy' : 
-                  classType.charAt(0).toUpperCase() + classType.slice(1)}
-              </Button>
-            ))}
-          </div>
-        </div>
+        <h1 className="text-3xl font-bold mb-2">Choose your outbound flight</h1>
+        <p className="text-gray-600 mb-8">
+          Inclusive of airfare, taxes, fees and carrier imposed charges
+        </p>
 
-        {/* Flight Lists */}
         <div className="space-y-8">
           {renderFlightList('outbound')}
           {searchParams.tripType === 'round-trip' && renderFlightList('inbound')}
         </div>
+
+        {isComplete && (
+          <div className="mt-8 flex justify-center">
+            <Button 
+              size="lg"
+              className="bg-[#0078D2] hover:bg-[#0078D2]/90 text-white px-8 py-6 text-lg"
+            >
+              Continue to add passengers
+              <ChevronRight className="ml-2 h-5 w-5" />
+            </Button>
+          </div>
+        )}
       </div>
 
       {/* Summary Dialog */}
       <Dialog open={showSummary} onOpenChange={setShowSummary}>
-        <DialogContent className="sm:max-w-[500px]">
-          <DialogHeader>
-            <DialogTitle className="text-2xl font-bold text-center">Trip Summary</DialogTitle>
+        <DialogContent className="max-w-[600px] p-0">
+          <DialogHeader className="px-6 pt-6 pb-0">
+            <div className="flex items-center justify-between">
+              <DialogTitle className="text-xl">Trip Summary</DialogTitle>
+              <DialogClose className="h-6 w-6 p-0 opacity-75 hover:opacity-100" />
+            </div>
           </DialogHeader>
 
-          {isComplete && selectedOutboundDetails && (
-            <div className="space-y-6">
-              {/* Success Message */}
-              <div className="bg-green-50 p-4 rounded-lg flex items-center gap-2 text-green-700">
-                <Check className="h-5 w-5" />
-                <span className="text-lg">Flight{searchParams.tripType === 'round-trip' ? 's' : ''} selected successfully</span>
-              </div>
-
-              {/* Flight Details */}
+          <div className="px-6 pb-6">
+            {isComplete && selectedOutboundDetails && (
               <div className="space-y-4">
-                <h2 className="text-xl font-semibold">Flight details</h2>
-                
-                {/* Outbound Flight */}
-                <div className="space-y-4">
-                  <div>
-                    <div className="text-gray-600">Outbound</div>
-                    <div className="text-xl font-semibold">
-                      {format(new Date(searchParams.departureDate), "EEEE, d MMMM yyyy")}
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="text-2xl font-bold">{selectedOutboundDetails.departureTime}</div>
-                      <div className="text-lg">{searchParams.departureCode}</div>
-                    </div>
-
-                    <div className="text-center text-gray-600">
-                      <div>{selectedOutboundDetails.classes[selectedOutbound.class].duration}</div>
-                      <div>Non-stop</div>
-                    </div>
-
-                    <div className="text-right">
-                      <div className="text-2xl font-bold">{selectedOutboundDetails.arrivalTime}</div>
-                      <div className="text-lg">{searchParams.arrivalCode}</div>
-                    </div>
-                  </div>
-
-                  <div className="text-gray-600">
-                    Flight number
-                    <span className="float-right font-semibold text-black">
-                      A380 {selectedOutboundDetails.id}
-                    </span>
-                  </div>
+                {/* Success Message */}
+                <div className="bg-[#E8F2E8] rounded-lg p-3 flex items-center gap-2">
+                  <Check className="h-4 w-4 text-[#2B8000]" />
+                  <span className="text-[#2B8000] text-sm">
+                    Flight{searchParams.tripType === 'round-trip' ? 's' : ''} selected successfully
+                  </span>
                 </div>
 
-                {/* Return Flight */}
-                {searchParams.tripType === 'round-trip' && selectedInbound && selectedInboundDetails && (
-                  <div className="space-y-4 mt-8">
+                {/* Flight Details */}
+                <div>
+                  <h2 className="text-base font-semibold mb-3">Flight details</h2>
+                  
+                  {/* Outbound Flight */}
+                  <div className="border rounded-lg p-4">
                     <div>
-                      <div className="text-gray-600">Return</div>
-                      <div className="text-xl font-semibold">
-                        {format(new Date(searchParams.returnDate!), "EEEE, d MMMM yyyy")}
+                      <div className="text-gray-600 text-xs">Outbound</div>
+                      <div className="text-sm font-medium">
+                        {format(new Date(searchParams.departureDate), "EEEE, d MMMM yyyy")}
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between mt-3">
                       <div>
-                        <div className="text-2xl font-bold">{selectedInboundDetails.departureTime}</div>
-                        <div className="text-lg">{searchParams.arrivalCode}</div>
+                        <div className="text-base font-bold">{selectedOutboundDetails.departureTime}</div>
+                        <div className="text-sm">DXB</div>
                       </div>
 
-                      <div className="text-center text-gray-600">
-                        <div>{selectedInboundDetails.classes[selectedInbound.class].duration}</div>
+                      <div className="text-center text-gray-600 text-xs">
+                        <div className="flex items-center gap-2">
+                          <div className="h-[1px] w-12 bg-gray-300"></div>
+                          <div className="w-1 h-1 rounded-full bg-gray-300"></div>
+                          <div className="h-[1px] w-12 bg-gray-300"></div>
+                        </div>
+                        <div className="mt-0.5">{selectedOutboundDetails.classes[selectedOutbound.class].duration}</div>
                         <div>Non-stop</div>
                       </div>
 
                       <div className="text-right">
-                        <div className="text-2xl font-bold">{selectedInboundDetails.arrivalTime}</div>
-                        <div className="text-lg">{searchParams.departureCode}</div>
+                        <div className="text-base font-bold">{selectedOutboundDetails.arrivalTime}</div>
+                        <div className="text-sm">LHR</div>
                       </div>
                     </div>
 
-                    <div className="text-gray-600">
+                    <div className="text-xs text-gray-600 mt-3">
                       Flight number
-                      <span className="float-right font-semibold text-black">
-                        A380 {selectedInboundDetails.id}
+                      <span className="float-right font-medium text-black">
+                        A380 {selectedOutboundDetails.id}
                       </span>
                     </div>
                   </div>
-                )}
-              </div>
 
-              {/* Price Details */}
-              <div className="space-y-4 pt-4">
-                <h2 className="text-xl font-semibold">Price details</h2>
-                
-                <div className="space-y-2">
-                  <div className="flex justify-between">
-                    <span>Cabin class</span>
-                    <span className="font-semibold">
-                      {selectedClass === 'premiumEconomy' ? 'Premium Economy' : 
-                        selectedClass.charAt(0).toUpperCase() + selectedClass.slice(1)}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Outbound fare</span>
-                    <span className="font-semibold">{selectedOutbound.fareType}</span>
-                  </div>
-                  {searchParams.tripType === 'round-trip' && selectedInbound && (
-                    <div className="flex justify-between">
-                      <span>Return fare</span>
-                      <span className="font-semibold">{selectedInbound.fareType}</span>
+                  {/* Return Flight for Round Trip */}
+                  {searchParams.tripType === 'round-trip' && selectedInbound && selectedInboundDetails && (
+                    <div className="border rounded-lg p-4 mt-3">
+                      <div>
+                        <div className="text-gray-600 text-xs">Return</div>
+                        <div className="text-sm font-medium">
+                          {format(new Date(searchParams.returnDate!), "EEEE, d MMMM yyyy")}
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-between mt-3">
+                        <div>
+                          <div className="text-base font-bold">{selectedInboundDetails.departureTime}</div>
+                          <div className="text-sm">LHR</div>
+                        </div>
+
+                        <div className="text-center text-gray-600 text-xs">
+                          <div className="flex items-center gap-2">
+                            <div className="h-[1px] w-12 bg-gray-300"></div>
+                            <div className="w-1 h-1 rounded-full bg-gray-300"></div>
+                            <div className="h-[1px] w-12 bg-gray-300"></div>
+                          </div>
+                          <div className="mt-0.5">{selectedInboundDetails.classes[selectedInbound.class].duration}</div>
+                          <div>Non-stop</div>
+                        </div>
+
+                        <div className="text-right">
+                          <div className="text-base font-bold">{selectedInboundDetails.arrivalTime}</div>
+                          <div className="text-sm">DXB</div>
+                        </div>
+                      </div>
+
+                      <div className="text-xs text-gray-600 mt-3">
+                        Flight number
+                        <span className="float-right font-medium text-black">
+                          A380 {selectedInboundDetails.id}
+                        </span>
+                      </div>
                     </div>
                   )}
-                  <div className="flex justify-between">
-                    <span>Passengers</span>
-                    <span className="font-semibold">
-                      {searchParams.passengers} Adult{searchParams.passengers > 1 ? 's' : ''}
-                    </span>
-                  </div>
-                  <div className="flex justify-between pt-4 text-xl font-bold">
-                    <span>Total price</span>
-                    <span>AED {totalPrice.toLocaleString()}</span>
+                </div>
+
+                {/* Price Details */}
+                <div className="border rounded-lg p-4">
+                  <h2 className="text-base font-semibold mb-3">Price details</h2>
+                  
+                  <div className="space-y-2 text-xs">
+                    <div className="flex justify-between">
+                      <span>Cabin class</span>
+                      <span className="font-medium">
+                        {selectedClass === 'premiumEconomy' ? 'Premium Economy' : 
+                          selectedClass.charAt(0).toUpperCase() + selectedClass.slice(1)}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Outbound fare</span>
+                      <span className="font-medium">{selectedOutbound.fareType}</span>
+                    </div>
+                    {searchParams.tripType === 'round-trip' && selectedInbound && (
+                      <div className="flex justify-between">
+                        <span>Return fare</span>
+                        <span className="font-medium">{selectedInbound.fareType}</span>
+                      </div>
+                    )}
+                    <div className="flex justify-between">
+                      <span>Passengers</span>
+                      <span className="font-medium">
+                        {searchParams.passengers} Adult{searchParams.passengers > 1 ? 's' : ''}
+                      </span>
+                    </div>
+                    <div className="flex justify-between pt-2 text-base font-bold">
+                      <span>Total price</span>
+                      <span>AED {totalPrice.toLocaleString()}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Action Buttons */}
-              <div className="flex gap-4 pt-4">
-                <Button
-                  variant="outline"
-                  className="flex-1"
-                  onClick={() => setShowSummary(false)}
-                >
-                  Close
-                </Button>
-                <Button className="flex-1 bg-blue-600 hover:bg-blue-700">
-                  Continue to payment
-                </Button>
+                {/* Action Buttons */}
+                <div className="flex gap-3 pt-2">
+                  <DialogClose asChild>
+                    <Button
+                      variant="outline"
+                      className="flex-1 border-gray-200 hover:bg-gray-50 h-9"
+                    >
+                      Close
+                    </Button>
+                  </DialogClose>
+                  <Button className="flex-1 bg-[#0078D2] hover:bg-[#0078D2]/90 h-9">
+                    Continue to payment
+                  </Button>
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </DialogContent>
       </Dialog>
 
