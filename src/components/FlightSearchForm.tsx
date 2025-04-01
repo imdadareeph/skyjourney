@@ -114,6 +114,28 @@ export default function FlightSearchForm() {
       hasError = true;
     }
 
+    // Check if departure date is greater than return date for round trips
+    if (tripType === 'round-trip' && date && returnDate && date > returnDate) {
+      const departureElement = document.querySelector('.button-departure');
+      const returnElement = document.querySelector('.button-return');
+      
+      if (departureElement) {
+        departureElement.classList.add('required-field-missing');
+      }
+      
+      if (returnElement) {
+        returnElement.classList.add('required-field-missing');
+      }
+      
+      toast({
+        title: "Invalid Date Selection",
+        description: "Departure date cannot be later than return date.",
+        variant: "destructive",
+      });
+      
+      return;
+    }
+
     if (hasError) {
       toast({
         title: "Required Fields Missing",
@@ -252,9 +274,16 @@ export default function FlightSearchForm() {
                   <Calendar
                     mode="single"
                     selected={date}
-                    onSelect={setDate}
+                    onSelect={(newDate) => {
+                      setDate(newDate);
+                      // If return date exists and is before the new departure date, reset it
+                      if (tripType === 'round-trip' && returnDate && newDate && newDate > returnDate) {
+                        setReturnDate(undefined);
+                      }
+                    }}
                     initialFocus
                     className="bg-white"
+                    disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
                   />
                 </PopoverContent>
               </Popover>
@@ -287,6 +316,11 @@ export default function FlightSearchForm() {
                       onSelect={setReturnDate}
                       initialFocus
                       className="bg-white"
+                      disabled={(day) => {
+                        // Disable dates before the departure date or before today
+                        const today = new Date(new Date().setHours(0, 0, 0, 0));
+                        return day < today || (date ? day < date : false);
+                      }}
                     />
                   </PopoverContent>
                 </Popover>
