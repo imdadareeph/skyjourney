@@ -1,12 +1,11 @@
-
 import { Card, CardContent } from "@/components/ui/card";
 
 const destinations = [
   {
     city: "Dubai",
     country: "United Arab Emirates",
-    image: "photo-1512453979798-5ea266f8880c",
-    price: "From $299",
+    image: "/destinations/dubai.jpg",
+    price: "1,200"
   },
   {
     city: "London",

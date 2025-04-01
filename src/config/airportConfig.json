@@ -899,6 +899,12 @@
       "name": "Ixtapa-Zihuatanejo International Airport",
       "city": "Ixtapa/Zihuatenejo",
       "country": "Mexico"
+    },
+    {
+      "code": "DXB",
+      "name": "Dubai International Airport",
+      "city": "Dubai",
+      "country": "United Arab Emirates"
     }
   ]
 } 

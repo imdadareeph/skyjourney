@@ -14,12 +14,14 @@ import '@/index.css';
 import PassengerDetails from '@/pages/PassengerDetails';
 import Options from '@/pages/Options';
 import Payment from '@/pages/Payment';
+import BookingConfirmation from './pages/BookingConfirmation';
 
 const queryClient = new QueryClient();
 
 function AppContent() {
   const location = useLocation();
-  const showNavbar = location.pathname !== '/search-results';
+  const showNavbar = location.pathname !== '/search-results' && location.pathname !== '/booking-confirmation';
+  const showFooter = location.pathname !== '/booking-confirmation';
 
   return (
     <div className="min-h-screen bg-background font-sans antialiased">
@@ -36,12 +38,15 @@ function AppContent() {
             <Route path="/passengers" element={<PassengerDetails />} />
             <Route path="/options" element={<Options />} />
             <Route path="/payment" element={<Payment />} />
+            <Route path="/booking-confirmation" element={<BookingConfirmation />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
-        <div className="full-width-container">
-          <Footer />
-        </div>
+        {showFooter && (
+          <div className="full-width-container">
+            <Footer />
+          </div>
+        )}
       </div>
     </div>
   );

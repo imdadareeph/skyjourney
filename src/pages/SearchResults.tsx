@@ -13,6 +13,7 @@ import { ChevronDown, ChevronUp, Plane, Check, ChevronLeft, ChevronRight } from 
 import flightData from '@/data/flightData.json'
 import Footer from '@/components/Footer'
 import ItineraryBar from '@/components/ItineraryBar'
+import StepIndicator from '@/components/StepIndicator'
 
 interface SearchParams {
   departureCode: string
@@ -290,6 +291,13 @@ export default function SearchResults() {
     )
   }
 
+  const steps = [
+    { name: 'Flights', status: 'current' },
+    { name: 'Passengers', status: 'upcoming' },
+    { name: 'Options', status: 'upcoming' },
+    { name: 'Payment', status: 'upcoming' },
+  ]
+
   return (
     <div className="min-h-screen bg-gray-50">
       <ItineraryBar 
@@ -306,6 +314,9 @@ export default function SearchResults() {
         ))}
         onViewSummary={() => setShowSummary(true)}
       />
+      
+      {/* Add Progress Indicator */}
+      <StepIndicator steps={steps} />
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-8">

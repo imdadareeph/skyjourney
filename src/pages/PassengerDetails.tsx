@@ -20,6 +20,7 @@ import {
 import { Input } from "@/components/ui/input"
 import Footer from '@/components/Footer'
 import { format } from 'date-fns'
+import StepIndicator from '@/components/StepIndicator'
 
 interface PassengerDetailsProps {
   title: string
@@ -36,7 +37,12 @@ interface PassengerDetailsProps {
 export default function PassengerDetails() {
   const location = useLocation()
   const navigate = useNavigate()
-  const { searchParams, selectedOutbound, selectedInbound, totalPrice } = location.state
+  const { searchParams, selectedOutbound, selectedInbound, totalPrice } = location.state || {
+    searchParams: { tripType: 'round-trip', passengers: 1 },
+    selectedOutbound: { class: 'economy', fareType: 'Flex', price: 1600 },
+    selectedInbound: { class: 'economy', fareType: 'Flex', price: 460 },
+    totalPrice: 2060
+  }
   const [showSummary, setShowSummary] = useState(false)
 
   const steps = [
@@ -62,54 +68,7 @@ export default function PassengerDetails() {
       />
 
       {/* Progress Indicator */}
-      <div className="border-b">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <nav className="flex justify-center" aria-label="Progress">
-            <ol role="list" className="flex items-center space-x-8">
-              {steps.map((step, stepIdx) => (
-                <li key={step.name} className="relative">
-                  {step.status === 'complete' ? (
-                    <div className="group">
-                      <span className="flex items-center">
-                        <span className="relative flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#0078D2]">
-                          <svg className="h-3 w-3 text-white" viewBox="0 0 12 12">
-                            <path fill="currentColor" d="M3.707 5.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4a1 1 0 00-1.414-1.414L5 6.586 3.707 5.293z" />
-                          </svg>
-                        </span>
-                        <span className="ml-4 text-sm font-medium text-[#0078D2]">{step.name}</span>
-                      </span>
-                    </div>
-                  ) : step.status === 'current' ? (
-                    <div className="flex items-center" aria-current="step">
-                      <span className="relative flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full border-2 border-[#0078D2]">
-                        <span className="h-2.5 w-2.5 rounded-full bg-[#0078D2]" />
-                      </span>
-                      <span className="ml-4 text-sm font-medium text-[#0078D2]">{step.name}</span>
-                    </div>
-                  ) : (
-                    <div className="group">
-                      <div className="flex items-center">
-                        <span className="relative flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full border-2 border-gray-300">
-                          <span className="h-2.5 w-2.5 rounded-full" />
-                        </span>
-                        <span className="ml-4 text-sm font-medium text-gray-500">{step.name}</span>
-                      </div>
-                    </div>
-                  )}
-
-                  {stepIdx !== steps.length - 1 ? (
-                    <div className="absolute top-0 right-0 hidden h-full w-5 md:block" aria-hidden="true">
-                      <svg className="h-full w-full text-gray-300" viewBox="0 0 22 80" fill="none" preserveAspectRatio="none">
-                        <path d="M0 -2L20 40L0 82" vectorEffect="non-scaling-stroke" stroke="currentcolor" strokeLinejoin="round" />
-                      </svg>
-                    </div>
-                  ) : null}
-                </li>
-              ))}
-            </ol>
-          </nav>
-        </div>
-      </div>
+      <StepIndicator steps={steps} />
 
       {/* Passenger Form */}
       <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:px-8">

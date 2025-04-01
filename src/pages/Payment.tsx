@@ -20,6 +20,8 @@ import {
 } from "@/components/ui/select"
 import Footer from '@/components/Footer'
 import { format } from 'date-fns'
+import StepIndicator from '@/components/StepIndicator'
+import { Step } from '@/components/StepIndicator'
 
 export default function Payment() {
   const location = useLocation()
@@ -32,11 +34,11 @@ export default function Payment() {
   const [paymentMethod, setPaymentMethod] = useState('credit')
   const [selectedPaymentOption, setSelectedPaymentOption] = useState('full')
 
-  const steps = [
-    { name: 'Flights', status: 'complete' },
-    { name: 'Passengers', status: 'complete' },
-    { name: 'Options', status: 'complete' },
-    { name: 'Payment', status: 'current' },
+  const steps: Step[] = [
+    { name: 'Flights', status: 'complete', path: '/search-results' },
+    { name: 'Passengers', status: 'complete', path: '/passengers' },
+    { name: 'Options', status: 'complete', path: '/options' },
+    { name: 'Payment', status: 'current', path: '/payment' },
   ]
 
   const paymentOptions = [
@@ -76,54 +78,21 @@ export default function Payment() {
       />
 
       {/* Progress Indicator */}
-      <div className="border-b">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <nav className="flex justify-center" aria-label="Progress">
-            <ol role="list" className="flex items-center space-x-8">
-              {steps.map((step, stepIdx) => (
-                <li key={step.name} className="relative">
-                  {step.status === 'complete' ? (
-                    <div className="group">
-                      <span className="flex items-center">
-                        <span className="relative flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#0078D2]">
-                          <svg className="h-3 w-3 text-white" viewBox="0 0 12 12">
-                            <path fill="currentColor" d="M3.707 5.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4a1 1 0 00-1.414-1.414L5 6.586 3.707 5.293z" />
-                          </svg>
-                        </span>
-                        <span className="ml-4 text-sm font-medium text-[#0078D2]">{step.name}</span>
-                      </span>
-                    </div>
-                  ) : step.status === 'current' ? (
-                    <div className="flex items-center" aria-current="step">
-                      <span className="relative flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full border-2 border-[#0078D2]">
-                        <span className="h-2.5 w-2.5 rounded-full bg-[#0078D2]" />
-                      </span>
-                      <span className="ml-4 text-sm font-medium text-[#0078D2]">{step.name}</span>
-                    </div>
-                  ) : (
-                    <div className="group">
-                      <div className="flex items-center">
-                        <span className="relative flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full border-2 border-gray-300">
-                          <span className="h-2.5 w-2.5 rounded-full" />
-                        </span>
-                        <span className="ml-4 text-sm font-medium text-gray-500">{step.name}</span>
-                      </div>
-                    </div>
-                  )}
-
-                  {stepIdx !== steps.length - 1 ? (
-                    <div className="absolute top-0 right-0 hidden h-full w-5 md:block" aria-hidden="true">
-                      <svg className="h-full w-full text-gray-300" viewBox="0 0 22 80" fill="none" preserveAspectRatio="none">
-                        <path d="M0 -2L20 40L0 82" vectorEffect="non-scaling-stroke" stroke="currentcolor" strokeLinejoin="round" />
-                      </svg>
-                    </div>
-                  ) : null}
-                </li>
-              ))}
-            </ol>
-          </nav>
-        </div>
-      </div>
+      <StepIndicator 
+        steps={steps} 
+        onStepClick={(index, path) => {
+          if (path) {
+            navigate(path, { 
+              state: { 
+                searchParams, 
+                selectedOutbound, 
+                selectedInbound, 
+                totalPrice 
+              } 
+            });
+          }
+        }}
+      />
 
       {/* Flight Summary Section */}
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -208,12 +177,12 @@ export default function Payment() {
           </div>
         </div>
 
-        {/* Emirates Foundation Section */}
+        {/* SkyJourney Foundation Section */}
         <div className="mt-8 bg-white border rounded-lg p-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <div className="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center text-white font-bold mr-3">E</div>
-              <span className="font-medium">Donate to the Emirates Airline Foundation</span>
+              <div className="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center text-white font-bold mr-3">S</div>
+              <span className="font-medium">Donate to the SkyJourney Airline Foundation</span>
             </div>
             <Button variant="outline" size="sm">
               Show
@@ -382,9 +351,18 @@ export default function Payment() {
             size="lg"
             className="px-8 py-6 text-lg bg-[#0078D2] hover:bg-[#0078D2]/90 text-white"
             onClick={() => {
-              // Handle payment submission here
-              alert('Payment successful! Thank you for your booking.');
-              navigate('/');
+              // Generate a random booking reference
+              const bookingReference = 'SJ' + Math.random().toString().slice(2, 8);
+              // Navigate to confirmation page
+              navigate('/booking-confirmation', {
+                state: {
+                  searchParams,
+                  selectedOutbound,
+                  selectedInbound,
+                  totalPrice,
+                  bookingReference
+                }
+              });
             }}
           >
             Pay Now
