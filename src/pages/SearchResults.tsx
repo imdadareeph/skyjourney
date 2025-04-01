@@ -12,6 +12,7 @@ import { format } from 'date-fns'
 import { ChevronDown, ChevronUp, Plane, Check, ChevronLeft, ChevronRight } from 'lucide-react'
 import flightData from '@/data/flightData.json'
 import Footer from '@/components/Footer'
+import ItineraryBar from '@/components/ItineraryBar'
 
 interface SearchParams {
   departureCode: string
@@ -291,56 +292,20 @@ export default function SearchResults() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Itinerary Bar */}
-      <div className="bg-white border-b">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-6">
-              <div className="flex items-center gap-2 text-lg">
-                <span className="font-medium">Dubai (DXB)</span>
-                <span className="text-gray-400">→</span>
-                <span className="font-medium">London Heathrow (LHR)</span>
-              </div>
-              <div className="flex items-center text-sm text-gray-600">
-                <span>•</span>
-                <span className="mx-2">{searchParams.tripType === 'one-way' ? 'One way' : 'Round trip'}</span>
-                <span>•</span>
-                <span className="ml-2">{searchParams.passengers} passenger{searchParams.passengers > 1 ? 's' : ''}</span>
-              </div>
-              <Button 
-                variant="link" 
-                className="text-[#0078D2] p-0 h-auto text-sm"
-                onClick={() => navigate('/')}
-              >
-                Change search
-              </Button>
-            </div>
-            <div className="flex items-center gap-6">
-              <div className="text-sm">
-                <span className="text-gray-600">Cost</span>
-                <span className="ml-2 text-xl font-semibold">
-                  AED {isComplete ? totalPrice.toLocaleString() : Math.min(...flightData.flights.map(f => 
-                    f.classes[selectedClass].fares[0].price
-                  )).toLocaleString()}
-                </span>
-              </div>
-              <Button 
-                variant="outline" 
-                className={`border-[#0078D2] ${
-                  isComplete 
-                    ? 'text-[#0078D2] hover:bg-[#0078D2] hover:text-white' 
-                    : 'bg-gray-100 text-gray-400 border-gray-200'
-                }`}
-                onClick={() => setShowSummary(true)}
-                disabled={!isComplete}
-              >
-                View summary
-                <ChevronDown className="ml-2 h-4 w-4" />
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <ItineraryBar 
+        departureCode="DXB"
+        departureName="Dubai"
+        arrivalCode="LHR"
+        arrivalName="London Heathrow"
+        tripType={searchParams.tripType}
+        passengers={searchParams.passengers}
+        showViewSummary={true}
+        isComplete={isComplete}
+        totalPrice={isComplete ? totalPrice : Math.min(...flightData.flights.map(f => 
+          f.classes[selectedClass].fares[0].price
+        ))}
+        onViewSummary={() => setShowSummary(true)}
+      />
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-8">

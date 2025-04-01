@@ -66,7 +66,7 @@ const Navbar = () => {
 
           {/* Auth Buttons */}
           <div className="hidden md:flex items-center space-x-4">
-            <Button
+            <Button 
               variant={isScrolled ? "outline" : "secondary"}
               className={`${
                 !isScrolled ? "bg-white/10 hover:bg-white/20 text-white border-white/20" : ""
@@ -86,7 +86,7 @@ const Navbar = () => {
           {/* Mobile Menu */}
           <Sheet>
             <SheetTrigger asChild>
-              <Button
+              <Button 
                 variant="ghost"
                 className="md:hidden"
                 size="icon"
