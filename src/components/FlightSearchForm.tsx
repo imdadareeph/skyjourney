@@ -48,13 +48,15 @@ export default function FlightSearchForm() {
       borderWidth: '2px',
       borderRadius: '0.5rem',
       minHeight: '40px',
-      backgroundColor: 'white'
+      backgroundColor: 'white',
+      opacity: 1
     }),
     option: (base, state) => ({
       ...base,
       padding: '8px 12px',
       backgroundColor: state.isSelected ? '#f3f4f6' : 'white',
       color: 'black',
+      opacity: 1,
       '&:hover': {
         backgroundColor: '#f3f4f6'
       }
@@ -62,27 +64,63 @@ export default function FlightSearchForm() {
     menu: (base) => ({
       ...base,
       backgroundColor: 'white',
-      zIndex: 999
+      zIndex: 999,
+      opacity: 1
+    }),
+    placeholder: (base) => ({
+      ...base,
+      opacity: 1,
+      color: '#4b5563'
+    }),
+    input: (base) => ({
+      ...base,
+      opacity: 1
     })
   }
 
   const handleSearch = () => {
-    if (!origin || !destination || !date) {
+    let hasError = false;
+    
+    // Mark missing fields
+    if (!origin) {
+      const originElement = document.querySelector('.select-origin');
+      if (originElement) {
+        originElement.classList.add('required-field-missing');
+      }
+      hasError = true;
+    }
+    
+    if (!destination) {
+      const destElement = document.querySelector('.select-destination');
+      if (destElement) {
+        destElement.classList.add('required-field-missing');
+      }
+      hasError = true;
+    }
+    
+    if (!date) {
+      const dateElement = document.querySelector('.button-departure');
+      if (dateElement) {
+        dateElement.classList.add('required-field-missing');
+      }
+      hasError = true;
+    }
+    
+    if (tripType === 'round-trip' && !returnDate) {
+      const returnElement = document.querySelector('.button-return');
+      if (returnElement) {
+        returnElement.classList.add('required-field-missing');
+      }
+      hasError = true;
+    }
+
+    if (hasError) {
       toast({
         title: "Required Fields Missing",
         description: "Please select departure, destination, and travel dates.",
         variant: "destructive",
-      })
-      return
-    }
-
-    if (tripType === 'round-trip' && !returnDate) {
-      toast({
-        title: "Return Date Required",
-        description: "Please select a return date for round-trip flights.",
-        variant: "destructive",
-      })
-      return
+      });
+      return;
     }
 
     const searchParams = {
@@ -145,8 +183,12 @@ export default function FlightSearchForm() {
               <Label>From</Label>
               <div className="mt-1">
                 <Select
+                  className="select-origin"
                   value={origin}
-                  onChange={(option) => setOrigin(option)}
+                  onChange={(option) => {
+                    setOrigin(option);
+                    document.querySelector('.select-origin')?.classList.remove('required-field-missing');
+                  }}
                   options={airportOptions.filter(opt => opt.value !== destination?.value)}
                   styles={customStyles}
                   placeholder={
@@ -165,8 +207,12 @@ export default function FlightSearchForm() {
               <Label>To</Label>
               <div className="mt-1">
                 <Select
+                  className="select-destination"
                   value={destination}
-                  onChange={(option) => setDestination(option)}
+                  onChange={(option) => {
+                    setDestination(option);
+                    document.querySelector('.select-destination')?.classList.remove('required-field-missing');
+                  }}
                   options={airportOptions.filter(opt => opt.value !== origin?.value)}
                   styles={customStyles}
                   placeholder={
@@ -191,15 +237,18 @@ export default function FlightSearchForm() {
                   <Button
                     variant="outline"
                     className={cn(
-                      "w-full justify-start text-left font-normal border-2 mt-1",
-                      !date && "text-muted-foreground"
+                      "w-full justify-start text-left font-normal border-2 mt-1 bg-white opacity-100 button-departure",
+                      !date && "text-gray-600"
                     )}
+                    onClick={() => {
+                      document.querySelector('.button-departure')?.classList.remove('required-field-missing');
+                    }}
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
                     {date ? format(date, "dd/MM/yyyy") : <span>dd/mm/yyyy</span>}
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-auto p-0 bg-white" align="start">
+                <PopoverContent className="w-auto p-0 bg-white opacity-100" align="start">
                   <Calendar
                     mode="single"
                     selected={date}
@@ -220,15 +269,18 @@ export default function FlightSearchForm() {
                     <Button
                       variant="outline"
                       className={cn(
-                        "w-full justify-start text-left font-normal border-2 mt-1",
-                        !returnDate && "text-muted-foreground"
+                        "w-full justify-start text-left font-normal border-2 mt-1 bg-white opacity-100 button-return",
+                        !returnDate && "text-gray-600"
                       )}
+                      onClick={() => {
+                        document.querySelector('.button-return')?.classList.remove('required-field-missing');
+                      }}
                     >
                       <CalendarIcon className="mr-2 h-4 w-4" />
                       {returnDate ? format(returnDate, "dd/MM/yyyy") : <span>dd/mm/yyyy</span>}
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0 bg-white" align="start">
+                  <PopoverContent className="w-auto p-0 bg-white opacity-100" align="start">
                     <Calendar
                       mode="single"
                       selected={returnDate}
@@ -248,13 +300,13 @@ export default function FlightSearchForm() {
                 <PopoverTrigger asChild>
                   <Button
                     variant="outline"
-                    className="w-full justify-start text-left font-normal border-2 mt-1"
+                    className="w-full justify-start text-left font-normal border-2 mt-1 bg-white opacity-100"
                   >
                     <User className="mr-2 h-4 w-4" />
                     {passengers} {passengers === 1 ? 'passenger' : 'passengers'}
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-80 p-4 bg-white">
+                <PopoverContent className="w-80 p-4 bg-white opacity-100">
                   <div className="flex items-center justify-between">
                     <div className="flex-1">
                       <Label>Number of passengers</Label>
@@ -291,6 +343,14 @@ export default function FlightSearchForm() {
           </Button>
         </div>
       </div>
+
+      <style>{`
+        .required-field-missing {
+          border-color: #e11d48 !important; /* red-600 */
+          background-color: rgba(254, 242, 242, 0.8) !important; /* red-50 with some opacity */
+          box-shadow: 0 0 0 1px #e11d48 !important; /* red-600 */
+        }
+      `}</style>
     </>
   )
 }
