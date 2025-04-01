@@ -53,7 +53,7 @@ export default function BookingNavbar() {
           <div className="flex h-10 items-center justify-between">
             <div className="flex items-center space-x-6">
               <Link to="/" className="text-xs hover:text-[#0078D2]">Help and contacts</Link>
-              <Link to="/" className="text-xs hover:text-[#0078D2]">COVID-19 travel support</Link>
+              <Link to="/" className="text-xs hover:text-[#0078D2]">Your Ticket Details</Link>
               <Link to="/" className="text-xs hover:text-[#0078D2]">Your questions</Link>
             </div>
             <div>
