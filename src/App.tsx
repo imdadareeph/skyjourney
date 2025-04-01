@@ -11,6 +11,7 @@ import FlightSearchForm from '@/components/FlightSearchForm';
 import Footer from '@/components/Footer';
 import '@/App.css';
 import '@/index.css';
+import PassengerDetails from '@/pages/PassengerDetails';
 
 const queryClient = new QueryClient();
 
@@ -30,6 +31,7 @@ function AppContent() {
           <Routes>
             <Route path="/" element={<FlightSearchForm />} />
             <Route path="/search-results" element={<SearchResults />} />
+            <Route path="/passengers" element={<PassengerDetails />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>

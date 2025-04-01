@@ -344,6 +344,14 @@ export default function SearchResults() {
                 : 'bg-gray-100 text-gray-400 cursor-not-allowed'
             }`}
             disabled={!isComplete}
+            onClick={() => navigate('/passengers', { 
+              state: { 
+                searchParams, 
+                selectedOutbound, 
+                selectedInbound, 
+                totalPrice 
+              } 
+            })}
           >
             Continue to add passengers
             <ChevronRight className="ml-2 h-5 w-5" />
