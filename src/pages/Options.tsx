@@ -10,40 +10,56 @@ import {
   DialogTitle,
   DialogClose,
 } from "@/components/ui/dialog"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import { Input } from "@/components/ui/input"
 import Footer from '@/components/Footer'
-import { format } from 'date-fns'
 
-interface PassengerDetailsProps {
-  title: string
-  firstName: string
-  lastName: string
-  dateOfBirth: string
-  nationality: string
-  passportNumber: string
-  passportExpiry: string
-  email: string
-  phone: string
-}
-
-export default function PassengerDetails() {
+export default function Options() {
   const location = useLocation()
   const navigate = useNavigate()
-  const { searchParams, selectedOutbound, selectedInbound, totalPrice } = location.state
   const [showSummary, setShowSummary] = useState(false)
+  const { searchParams, selectedOutbound, selectedInbound, totalPrice } = location.state || {
+    searchParams: { tripType: 'round-trip', passengers: 1 },
+    selectedOutbound: { class: 'economy', fareType: 'Flex', price: 1600 },
+    selectedInbound: { class: 'economy', fareType: 'Flex', price: 460 },
+    totalPrice: 2060
+  }
 
   const steps = [
     { name: 'Flights', status: 'complete' },
-    { name: 'Passengers', status: 'current' },
-    { name: 'Options', status: 'upcoming' },
+    { name: 'Passengers', status: 'complete' },
+    { name: 'Options', status: 'current' },
     { name: 'Payment', status: 'upcoming' },
+  ]
+
+  const ancillaries = [
+    {
+      title: 'Upgrade flights',
+      description: 'Premium Economy Flex Plus',
+      price: 2900,
+      image: '/upgrade-seat.jpg',
+      priceLabel: 'From AED',
+    },
+    {
+      title: 'Choose seats',
+      description: 'For a Regular seat',
+      price: 0,
+      image: '/choose-seats.jpg',
+      priceLabel: 'From',
+      priceText: 'Complimentary',
+    },
+    {
+      title: 'Add additional baggage',
+      description: 'For an additional 5 kg',
+      price: 230,
+      image: '/add-baggage.jpg',
+      priceLabel: 'From AED',
+    },
+    {
+      title: 'Add travel insurance plan',
+      description: 'For standard travel insurance',
+      price: 87,
+      image: '/travel-insurance.jpg',
+      priceLabel: 'AED',
+    },
   ]
 
   return (
@@ -111,74 +127,33 @@ export default function PassengerDetails() {
         </div>
       </div>
 
-      {/* Passenger Form */}
-      <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:px-8">
-        <div className="space-y-8">
-          <div>
-            <h2 className="text-2xl font-semibold text-gray-900">Passenger Details</h2>
-            <p className="mt-1 text-sm text-gray-600">Please enter the details for each passenger as they appear on their passport.</p>
-          </div>
+      {/* Main Content */}
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+        <h1 className="text-3xl font-bold text-gray-900">Enhance your travel experience</h1>
 
-          <div className="space-y-6 bg-white p-8 border rounded-lg">
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-              <div className="sm:col-span-2">
-                <label htmlFor="title" className="block text-sm font-medium text-gray-700">Title</label>
-                <Select>
-                  <SelectTrigger className="mt-1 bg-white">
-                    <SelectValue placeholder="Select title" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white">
-                    <SelectItem value="mr">Mr</SelectItem>
-                    <SelectItem value="mrs">Mrs</SelectItem>
-                    <SelectItem value="ms">Ms</SelectItem>
-                    <SelectItem value="miss">Miss</SelectItem>
-                    <SelectItem value="dr">Dr</SelectItem>
-                  </SelectContent>
-                </Select>
+        {/* Ancillaries Grid */}
+        <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {ancillaries.map((item) => (
+            <div key={item.title} className="group relative overflow-hidden rounded-lg border hover:border-[#0078D2] transition-colors">
+              <div className="aspect-h-3 aspect-w-4">
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  className="h-full w-full object-cover object-center"
+                />
               </div>
-              <div>
-                <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">First Name</label>
-                <Input id="firstName" type="text" className="mt-1" />
-              </div>
-              <div>
-                <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">Last Name</label>
-                <Input id="lastName" type="text" className="mt-1" />
-              </div>
-              <div>
-                <label htmlFor="dateOfBirth" className="block text-sm font-medium text-gray-700">Date of Birth</label>
-                <Input id="dateOfBirth" type="date" className="mt-1" />
-              </div>
-              <div>
-                <label htmlFor="nationality" className="block text-sm font-medium text-gray-700">Nationality</label>
-                <Select>
-                  <SelectTrigger className="mt-1 bg-white">
-                    <SelectValue placeholder="Select nationality" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white">
-                    <SelectItem value="ae">United Arab Emirates</SelectItem>
-                    <SelectItem value="gb">United Kingdom</SelectItem>
-                    <SelectItem value="us">United States</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <label htmlFor="passportNumber" className="block text-sm font-medium text-gray-700">Passport Number</label>
-                <Input id="passportNumber" type="text" className="mt-1" />
-              </div>
-              <div>
-                <label htmlFor="passportExpiry" className="block text-sm font-medium text-gray-700">Passport Expiry Date</label>
-                <Input id="passportExpiry" type="date" className="mt-1" />
-              </div>
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
-                <Input id="email" type="email" className="mt-1" />
-              </div>
-              <div>
-                <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Phone Number</label>
-                <Input id="phone" type="tel" className="mt-1" />
+              <div className="p-6">
+                <h3 className="text-lg font-semibold text-gray-900">{item.title}</h3>
+                <div className="mt-1 text-sm text-gray-500">{item.description}</div>
+                <div className="mt-4">
+                  <div className="text-xs text-gray-500">{item.priceLabel}</div>
+                  <div className="text-lg font-semibold text-gray-900">
+                    {item.priceText || item.price.toLocaleString()}
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
+          ))}
         </div>
 
         {/* Navigation Buttons */}
@@ -190,18 +165,20 @@ export default function PassengerDetails() {
             onClick={() => navigate(-1)}
           >
             <ChevronLeft className="mr-2 h-5 w-5" />
-            Return to Flights
+            Back to Passengers
           </Button>
           <Button
             size="lg"
             className="px-8 py-6 text-lg bg-[#0078D2] hover:bg-[#0078D2]/90 text-white"
-            onClick={() => navigate('/options', { state: { searchParams, selectedOutbound, selectedInbound, totalPrice } })}
+            onClick={() => navigate('/payment', { state: { searchParams, selectedOutbound, selectedInbound, totalPrice } })}
           >
-            Continue to Options
+            Continue to Payment
             <ChevronRight className="ml-2 h-5 w-5" />
           </Button>
         </div>
       </div>
+
+      <Footer />
 
       {/* Summary Dialog */}
       <Dialog open={showSummary} onOpenChange={setShowSummary}>
@@ -232,13 +209,13 @@ export default function PassengerDetails() {
                   <div>
                     <div className="text-gray-600 text-xs">Outbound</div>
                     <div className="text-sm font-medium">
-                      {format(new Date(searchParams.departureDate), "EEEE, d MMMM yyyy")}
+                      Thursday, 8 May 2025
                     </div>
                   </div>
 
                   <div className="flex items-center justify-between mt-3">
                     <div>
-                      <div className="text-base font-bold">{selectedOutbound.departureTime}</div>
+                      <div className="text-base font-bold">14:15</div>
                       <div className="text-sm">DXB</div>
                     </div>
 
@@ -253,7 +230,7 @@ export default function PassengerDetails() {
                     </div>
 
                     <div className="text-right">
-                      <div className="text-base font-bold">{selectedOutbound.arrivalTime}</div>
+                      <div className="text-base font-bold">18:40</div>
                       <div className="text-sm">LHR</div>
                     </div>
                   </div>
@@ -261,7 +238,7 @@ export default function PassengerDetails() {
                   <div className="text-xs text-gray-600 mt-3">
                     Flight number
                     <span className="float-right font-medium text-black">
-                      A380 {selectedOutbound.flightId}
+                      A380 {selectedOutbound?.flightId || 'EK389'}
                     </span>
                   </div>
                 </div>
@@ -272,13 +249,13 @@ export default function PassengerDetails() {
                     <div>
                       <div className="text-gray-600 text-xs">Return</div>
                       <div className="text-sm font-medium">
-                        {format(new Date(searchParams.returnDate!), "EEEE, d MMMM yyyy")}
+                        Friday, 15 May 2025
                       </div>
                     </div>
 
                     <div className="flex items-center justify-between mt-3">
                       <div>
-                        <div className="text-base font-bold">{selectedInbound.departureTime}</div>
+                        <div className="text-base font-bold">09:10</div>
                         <div className="text-sm">LHR</div>
                       </div>
 
@@ -293,7 +270,7 @@ export default function PassengerDetails() {
                       </div>
 
                       <div className="text-right">
-                        <div className="text-base font-bold">{selectedInbound.arrivalTime}</div>
+                        <div className="text-base font-bold">17:35</div>
                         <div className="text-sm">DXB</div>
                       </div>
                     </div>
@@ -301,7 +278,7 @@ export default function PassengerDetails() {
                     <div className="text-xs text-gray-600 mt-3">
                       Flight number
                       <span className="float-right font-medium text-black">
-                        A380 {selectedInbound.flightId}
+                        A380 {selectedInbound?.flightId || 'EK398'}
                       </span>
                     </div>
                   </div>
@@ -316,18 +293,18 @@ export default function PassengerDetails() {
                   <div className="flex justify-between">
                     <span>Cabin class</span>
                     <span className="font-medium">
-                      {selectedOutbound.class === 'premiumEconomy' ? 'Premium Economy' : 
-                        selectedOutbound.class.charAt(0).toUpperCase() + selectedOutbound.class.slice(1)}
+                      {selectedOutbound?.class === 'premiumEconomy' ? 'Premium Economy' : 
+                        selectedOutbound?.class.charAt(0).toUpperCase() + selectedOutbound?.class.slice(1)}
                     </span>
                   </div>
                   <div className="flex justify-between">
                     <span>Outbound fare</span>
-                    <span className="font-medium">{selectedOutbound.fareType}</span>
+                    <span className="font-medium">{selectedOutbound?.fareType}</span>
                   </div>
                   {searchParams.tripType === 'round-trip' && selectedInbound && (
                     <div className="flex justify-between">
                       <span>Return fare</span>
-                      <span className="font-medium">{selectedInbound.fareType}</span>
+                      <span className="font-medium">{selectedInbound?.fareType}</span>
                     </div>
                   )}
                   <div className="flex justify-between">
@@ -366,8 +343,6 @@ export default function PassengerDetails() {
           </div>
         </DialogContent>
       </Dialog>
-
-      <Footer />
     </div>
   )
 } 

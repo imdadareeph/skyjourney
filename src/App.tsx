@@ -12,6 +12,8 @@ import Footer from '@/components/Footer';
 import '@/App.css';
 import '@/index.css';
 import PassengerDetails from '@/pages/PassengerDetails';
+import Options from '@/pages/Options';
+import Payment from '@/pages/Payment';
 
 const queryClient = new QueryClient();
 
@@ -32,6 +34,8 @@ function AppContent() {
             <Route path="/" element={<FlightSearchForm />} />
             <Route path="/search-results" element={<SearchResults />} />
             <Route path="/passengers" element={<PassengerDetails />} />
+            <Route path="/options" element={<Options />} />
+            <Route path="/payment" element={<Payment />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
