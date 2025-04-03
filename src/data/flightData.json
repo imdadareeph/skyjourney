@@ -1,7 +1,7 @@
 {
   "flights": [
     {
-      "id": "EK003",
+      "id": "SJ003",
       "departureTime": "14:15",
       "arrivalTime": "18:40",
       "departureCode": "DXB",
@@ -102,7 +102,7 @@
       }
     },
     {
-      "id": "EK001",
+      "id": "SJ001",
       "departureTime": "08:45",
       "arrivalTime": "13:10",
       "departureCode": "DXB",

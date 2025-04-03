@@ -192,7 +192,7 @@ export default function Options() {
                   <div className="text-xs text-gray-600 mt-3">
                     Flight number
                     <span className="float-right font-medium text-black">
-                      A380 {selectedOutbound?.flightId || 'EK389'}
+                      A380 {selectedOutbound?.flightId || 'SJ389'}
                     </span>
                   </div>
                 </div>
@@ -232,7 +232,7 @@ export default function Options() {
                     <div className="text-xs text-gray-600 mt-3">
                       Flight number
                       <span className="float-right font-medium text-black">
-                        A380 {selectedInbound?.flightId || 'EK398'}
+                        A380 {selectedInbound?.flightId || 'SJ398'}
                       </span>
                     </div>
                   </div>
