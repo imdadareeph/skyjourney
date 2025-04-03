@@ -36,6 +36,11 @@ export default function FlightSearchForm() {
   const [origin, setOrigin] = useState<AirportOption | null>(null)
   const [destination, setDestination] = useState<AirportOption | null>(null)
   const [passengers, setPassengers] = useState(1)
+  const [passengerCounts, setPassengerCounts] = useState({
+    adult: 1,
+    child: 0,
+    infant: 0
+  })
 
   const airportOptions: AirportOption[] = airportConfig.airports.map(airport => ({
     value: airport.code,
@@ -79,71 +84,28 @@ export default function FlightSearchForm() {
     })
   }
 
+  const handlePassengerChange = (total: number, counts: { adult: number, child: number, infant: number }) => {
+    setPassengers(total)
+    setPassengerCounts(counts)
+  }
+
   const handleSearch = () => {
-    let hasError = false;
-    
-    // Mark missing fields
-    if (!origin) {
-      const originElement = document.querySelector('.select-origin');
-      if (originElement) {
-        originElement.classList.add('required-field-missing');
-      }
-      hasError = true;
-    }
-    
-    if (!destination) {
-      const destElement = document.querySelector('.select-destination');
-      if (destElement) {
-        destElement.classList.add('required-field-missing');
-      }
-      hasError = true;
-    }
-    
-    if (!date) {
-      const dateElement = document.querySelector('.button-departure');
-      if (dateElement) {
-        dateElement.classList.add('required-field-missing');
-      }
-      hasError = true;
-    }
-    
-    if (tripType === 'round-trip' && !returnDate) {
-      const returnElement = document.querySelector('.button-return');
-      if (returnElement) {
-        returnElement.classList.add('required-field-missing');
-      }
-      hasError = true;
-    }
-
-    // Check if departure date is greater than return date for round trips
-    if (tripType === 'round-trip' && date && returnDate && date > returnDate) {
-      const departureElement = document.querySelector('.button-departure');
-      const returnElement = document.querySelector('.button-return');
-      
-      if (departureElement) {
-        departureElement.classList.add('required-field-missing');
-      }
-      
-      if (returnElement) {
-        returnElement.classList.add('required-field-missing');
-      }
-      
-      toast({
-        title: "Invalid Date Selection",
-        description: "Departure date cannot be later than return date.",
-        variant: "destructive",
-      });
-      
-      return;
-    }
-
-    if (hasError) {
+    if (!origin || !destination || !date) {
       toast({
         title: "Required Fields Missing",
-        description: "Please select departure, destination, and travel dates.",
+        description: "Please fill in all required fields",
         variant: "destructive",
-      });
-      return;
+      })
+      return
+    }
+
+    if (tripType === 'round-trip' && !returnDate) {
+      toast({
+        title: "Return Date Required",
+        description: "Please select a return date for round-trip flights",
+        variant: "destructive",
+      })
+      return
     }
 
     const searchParams = {
@@ -152,7 +114,8 @@ export default function FlightSearchForm() {
       departureDate: date.toISOString(),
       returnDate: returnDate?.toISOString(),
       passengers,
-      tripType
+      tripType,
+      passengerCounts
     }
 
     navigate('/search-results', { state: searchParams })
@@ -345,7 +308,7 @@ export default function FlightSearchForm() {
                 <PopoverContent className="w-[300px] p-4">
                   <PassengerSelector
                     value={passengers}
-                    onChange={setPassengers}
+                    onChange={handlePassengerChange}
                   />
                 </PopoverContent>
               </Popover>

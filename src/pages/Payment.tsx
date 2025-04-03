@@ -26,9 +26,10 @@ import { Step } from '@/components/StepIndicator'
 export default function Payment() {
   const location = useLocation()
   const navigate = useNavigate()
-  const { searchParams, selectedOutbound, selectedInbound, totalPrice } = location.state || {
+  const { searchParams, selectedOutbound, selectedInbound, totalPrice, passengers } = location.state || {
     searchParams: { tripType: 'round-trip', passengers: 1 },
-    totalPrice: 2060
+    totalPrice: 2060,
+    passengers: []
   }
   const [showSummary, setShowSummary] = useState(false)
   const [paymentMethod, setPaymentMethod] = useState('credit')
@@ -195,7 +196,7 @@ export default function Payment() {
             <h2 className="text-xl font-semibold text-gray-900">Passengers ({searchParams.passengers} {searchParams.passengers === 1 ? 'Adult' : 'Adults'})</h2>
           </div>
           <div className="border-t pt-4 space-y-4">
-            {[...Array(searchParams.passengers)].map((_, index) => (
+            {passengers.map((passenger, index) => (
               <div key={index} className="flex items-center justify-between bg-white p-4 rounded-lg">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
@@ -204,8 +205,12 @@ export default function Payment() {
                     </span>
                   </div>
                   <div>
-                    <p className="text-lg font-medium text-gray-900">Mr Skyjourney Booking</p>
-                    <p className="text-sm text-gray-500">Adult</p>
+                    <p className="text-lg font-medium text-gray-900">
+                      {passenger.firstName} {passenger.lastName}
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      {passenger.type.charAt(0).toUpperCase() + passenger.type.slice(1)}
+                    </p>
                   </div>
                 </div>
                 <div className="text-sm text-gray-500">
@@ -453,7 +458,8 @@ export default function Payment() {
                   selectedOutbound,
                   selectedInbound,
                   totalPrice,
-                  bookingReference
+                  bookingReference,
+                  passengers: passengers || []
                 }
               });
             }}
