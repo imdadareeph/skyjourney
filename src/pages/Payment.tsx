@@ -33,6 +33,7 @@ export default function Payment() {
   const [showSummary, setShowSummary] = useState(false)
   const [paymentMethod, setPaymentMethod] = useState('credit')
   const [selectedPaymentOption, setSelectedPaymentOption] = useState('full')
+  const [additionalAddressLines, setAdditionalAddressLines] = useState<string[]>([])
 
   const steps: Step[] = [
     { name: 'Flights', status: 'complete', path: '/search-results' },
@@ -195,20 +196,22 @@ export default function Payment() {
         <div className="mt-12">
           <h2 className="text-2xl font-bold mb-6">Payment options</h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {paymentOptions.map((option) => (
               <div 
                 key={option.id}
-                className={`border p-6 rounded-lg cursor-pointer hover:border-[#0078D2] transition-all ${
-                  option.selected ? 'border-[#0078D2] bg-blue-50' : ''
+                className={`border-2 p-6 rounded-xl cursor-pointer transition-all duration-200 hover:shadow-lg ${
+                  option.selected 
+                    ? 'border-[#0078D2] bg-gradient-to-br from-blue-50 to-white shadow-md' 
+                    : 'border-gray-200 hover:border-[#0078D2]/50'
                 }`}
                 onClick={() => setSelectedPaymentOption(option.id)}
               >
                 <div className="flex justify-between mb-4">
                   <h3 className="font-semibold text-lg">{option.title}</h3>
                   {option.selected && (
-                    <div className="w-5 h-5 rounded-full bg-[#0078D2] flex items-center justify-center">
-                      <svg className="w-3 h-3 text-white" viewBox="0 0 12 12">
+                    <div className="w-6 h-6 rounded-full bg-[#0078D2] flex items-center justify-center">
+                      <svg className="w-4 h-4 text-white" viewBox="0 0 12 12">
                         <path fill="currentColor" d="M3.707 5.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4a1 1 0 00-1.414-1.414L5 6.586 3.707 5.293z" />
                       </svg>
                     </div>
@@ -225,16 +228,24 @@ export default function Payment() {
           <h2 className="text-2xl font-bold mb-6">Payment details</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="md:col-span-2 border rounded-lg">
-              <div className="p-6">
+            <div className="md:col-span-2 border-2 rounded-xl overflow-hidden">
+              <div className="p-6 bg-gradient-to-br from-blue-50 to-white">
                 <h3 className="text-lg font-semibold mb-4">Choose payment method</h3>
                 
                 <div 
-                  className="flex items-center p-4 border rounded-md cursor-pointer bg-blue-50 border-[#0078D2]"
+                  className={`flex items-center p-4 rounded-lg cursor-pointer transition-all duration-200 ${
+                    paymentMethod === 'credit' 
+                      ? 'bg-white border-2 border-[#0078D2] shadow-md' 
+                      : 'border-2 border-gray-200 hover:border-[#0078D2]/50'
+                  }`}
                   onClick={() => setPaymentMethod('credit')}
                 >
-                  <div className="w-6 h-6 rounded-full border-2 border-[#0078D2] flex items-center justify-center mr-3">
-                    <div className="w-3 h-3 rounded-full bg-[#0078D2]"></div>
+                  <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center mr-3 ${
+                    paymentMethod === 'credit' ? 'border-[#0078D2]' : 'border-gray-300'
+                  }`}>
+                    {paymentMethod === 'credit' && (
+                      <div className="w-3 h-3 rounded-full bg-[#0078D2]"></div>
+                    )}
                   </div>
                   <span className="font-medium">Credit/Debit card</span>
                   <div className="ml-auto">
@@ -243,30 +254,42 @@ export default function Payment() {
                 </div>
               </div>
               
-              <div className="border-t rounded-b-lg bg-gray-50 p-6">
+              <div className="border-t rounded-b-xl bg-white p-6">
                 <div className="mb-6">
                   <h3 className="text-lg font-semibold mb-2">Card Details</h3>
                 </div>
                 
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm text-gray-600 mb-1">Card number</label>
-                    <Input placeholder="0000 0000 0000 0000" />
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Card number</label>
+                    <Input 
+                      placeholder="0000 0000 0000 0000" 
+                      className="border-2 focus:border-[#0078D2] focus:ring-0"
+                    />
                   </div>
                   
                   <div>
-                    <label className="block text-sm text-gray-600 mb-1">Full name (as it appears on card)</label>
-                    <Input placeholder="Enter cardholder name" />
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Full name (as it appears on card)</label>
+                    <Input 
+                      placeholder="Enter cardholder name" 
+                      className="border-2 focus:border-[#0078D2] focus:ring-0"
+                    />
                   </div>
                   
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm text-gray-600 mb-1">Expiry date</label>
-                      <Input placeholder="MM / YYYY" />
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Expiry date</label>
+                      <Input 
+                        placeholder="MM / YYYY" 
+                        className="border-2 focus:border-[#0078D2] focus:ring-0"
+                      />
                     </div>
                     <div>
-                      <label className="block text-sm text-gray-600 mb-1">CVV</label>
-                      <Input placeholder="000" />
+                      <label className="block text-sm font-medium text-gray-700 mb-1">CVV</label>
+                      <Input 
+                        placeholder="000" 
+                        className="border-2 focus:border-[#0078D2] focus:ring-0"
+                      />
                     </div>
                   </div>
                 </div>
@@ -276,9 +299,9 @@ export default function Payment() {
                   
                   <div className="space-y-4">
                     <div>
-                      <label className="block text-sm text-gray-600 mb-1">Country / territory</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Country / territory</label>
                       <Select>
-                        <SelectTrigger>
+                        <SelectTrigger className="border-2 focus:border-[#0078D2] focus:ring-0">
                           <SelectValue placeholder="Select country" />
                         </SelectTrigger>
                         <SelectContent>
@@ -292,26 +315,50 @@ export default function Payment() {
                     </div>
                     
                     <div>
-                      <label className="block text-sm text-gray-600 mb-1">Address</label>
-                      <Input placeholder="Enter address" />
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
+                      <Input 
+                        placeholder="Enter address" 
+                        className="border-2 focus:border-[#0078D2] focus:ring-0"
+                      />
                     </div>
                     
+                    {additionalAddressLines.map((line, index) => (
+                      <div key={index}>
+                        <Input 
+                          placeholder="Additional address line" 
+                          className="border-2 focus:border-[#0078D2] focus:ring-0"
+                        />
+                      </div>
+                    ))}
+                    
                     <div>
-                      <Button variant="outline" className="gap-2">
+                      <Button 
+                        variant="outline" 
+                        className="gap-2 border-2 hover:border-[#0078D2] hover:bg-blue-50"
+                        onClick={() => {
+                          if (additionalAddressLines.length < 2) {
+                            setAdditionalAddressLines([...additionalAddressLines, '']);
+                          }
+                        }}
+                        disabled={additionalAddressLines.length >= 2}
+                      >
                         <Plus className="h-4 w-4" />
                         Add address line
                       </Button>
                     </div>
                     
                     <div>
-                      <label className="block text-sm text-gray-600 mb-1">City / town</label>
-                      <Input placeholder="Enter city" />
+                      <label className="block text-sm font-medium text-gray-700 mb-1">City / town</label>
+                      <Input 
+                        placeholder="Enter city" 
+                        className="border-2 focus:border-[#0078D2] focus:ring-0"
+                      />
                     </div>
                     
                     <div>
                       <p className="text-sm font-medium mb-2">You can choose to pay in any of the supported currencies below:</p>
                       <Select>
-                        <SelectTrigger>
+                        <SelectTrigger className="border-2 focus:border-[#0078D2] focus:ring-0">
                           <SelectValue placeholder="AED UAE Dirham" />
                         </SelectTrigger>
                         <SelectContent>
@@ -327,10 +374,15 @@ export default function Payment() {
               </div>
             </div>
             
-            <div className="bg-white border rounded-lg p-6 h-fit">
+            <div className="bg-gradient-to-br from-blue-50 to-white border-2 rounded-xl p-6 h-fit">
               <div className="flex justify-between items-center pb-4 border-b">
-                <span className="font-medium">Total to be paid:</span>
-                <span className="text-xl font-bold">AED {totalPrice.toLocaleString()}</span>
+                <span className="font-medium text-gray-700">Total to be paid:</span>
+                <span className="text-2xl font-bold text-[#0078D2]">AED {totalPrice.toLocaleString()}</span>
+              </div>
+              <div className="mt-4 text-sm text-gray-600">
+                <p>• Secure payment processing</p>
+                <p>• 24/7 customer support</p>
+                <p>• Instant booking confirmation</p>
               </div>
             </div>
           </div>
