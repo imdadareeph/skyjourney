@@ -57,9 +57,12 @@ export default function BookingNavbar() {
               <Link to="/" className="text-xs hover:text-[#0078D2]">Your questions</Link>
             </div>
             <div>
-              <Button size="sm" className="bg-red-600 hover:bg-red-700 px-3 py-1 h-7 rounded text-xs">
+              <Link 
+                to="/" 
+                className="inline-block bg-red-600 hover:bg-red-700 px-3 py-1 h-7 rounded text-xs text-white"
+              >
                 Search flights
-              </Button>
+              </Link>
             </div>
           </div>
         </div>

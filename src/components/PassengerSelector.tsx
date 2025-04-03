@@ -11,7 +11,7 @@ import {
 
 interface PassengerSelectorProps {
   value: number
-  onChange: (value: number) => void
+  onChange: (value: number, counts: { adult: number, child: number, infant: number }) => void
   maxPassengers?: number
 }
 
@@ -42,7 +42,12 @@ export default function PassengerSelector({ value, onChange, maxPassengers = 9 }
       });
       
       const total = newTypes.reduce((sum, pt) => sum + pt.count, 0);
-      onChange(total);
+      const counts = {
+        adult: newTypes.find(pt => pt.type === 'adult')?.count || 0,
+        child: newTypes.find(pt => pt.type === 'child')?.count || 0,
+        infant: newTypes.find(pt => pt.type === 'infant')?.count || 0
+      };
+      onChange(total, counts);
       return newTypes;
     });
   };
@@ -58,7 +63,12 @@ export default function PassengerSelector({ value, onChange, maxPassengers = 9 }
       });
       
       const total = newTypes.reduce((sum, pt) => sum + pt.count, 0);
-      onChange(total);
+      const counts = {
+        adult: newTypes.find(pt => pt.type === 'adult')?.count || 0,
+        child: newTypes.find(pt => pt.type === 'child')?.count || 0,
+        infant: newTypes.find(pt => pt.type === 'infant')?.count || 0
+      };
+      onChange(total, counts);
       return newTypes;
     });
   };

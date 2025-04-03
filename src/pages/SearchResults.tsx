@@ -13,7 +13,8 @@ import { ChevronDown, ChevronUp, Plane, Check, ChevronLeft, ChevronRight } from 
 import flightData from '@/data/flightData.json'
 import Footer from '@/components/Footer'
 import ItineraryBar from '@/components/ItineraryBar'
-import StepIndicator from '@/components/StepIndicator'
+import StepIndicator, { Step } from '@/components/StepIndicator'
+import { toast } from "@/components/ui/use-toast"
 
 interface SearchParams {
   departureCode: string
@@ -22,6 +23,11 @@ interface SearchParams {
   returnDate?: string
   passengers: number
   tripType: 'one-way' | 'round-trip'
+  passengerCounts: {
+    adult: number
+    child: number
+    infant: number
+  }
 }
 
 interface SelectedFlight {
@@ -291,12 +297,34 @@ export default function SearchResults() {
     )
   }
 
-  const steps = [
+  const steps: Step[] = [
+    { name: 'Search', status: 'complete' },
     { name: 'Flights', status: 'current' },
     { name: 'Passengers', status: 'upcoming' },
     { name: 'Options', status: 'upcoming' },
-    { name: 'Payment', status: 'upcoming' },
+    { name: 'Payment', status: 'upcoming' }
   ]
+
+  const handleContinue = () => {
+    if (!selectedOutbound || (searchParams.tripType === 'round-trip' && !selectedInbound)) {
+      toast({
+        title: "Flight Selection Required",
+        description: "Please select all required flights",
+        variant: "destructive",
+      })
+      return
+    }
+
+    navigate('/passengers', {
+      state: {
+        searchParams,
+        selectedOutbound,
+        selectedInbound,
+        totalPrice,
+        passengerCounts: searchParams.passengerCounts
+      }
+    })
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -355,14 +383,7 @@ export default function SearchResults() {
                 : 'bg-gray-100 text-gray-400 cursor-not-allowed'
             }`}
             disabled={!isComplete}
-            onClick={() => navigate('/passengers', { 
-              state: { 
-                searchParams, 
-                selectedOutbound, 
-                selectedInbound, 
-                totalPrice 
-              } 
-            })}
+            onClick={handleContinue}
           >
             Continue to add passengers
             <ChevronRight className="ml-2 h-5 w-5" />

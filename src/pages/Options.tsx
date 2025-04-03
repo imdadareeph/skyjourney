@@ -12,23 +12,25 @@ import {
 } from "@/components/ui/dialog"
 import Footer from '@/components/Footer'
 import StepIndicator from '@/components/StepIndicator'
+import { Step } from '@/components/StepIndicator'
 
 export default function Options() {
   const location = useLocation()
   const navigate = useNavigate()
   const [showSummary, setShowSummary] = useState(false)
-  const { searchParams, selectedOutbound, selectedInbound, totalPrice } = location.state || {
+  const { searchParams, selectedOutbound, selectedInbound, totalPrice, passengers } = location.state || {
     searchParams: { tripType: 'round-trip', passengers: 1 },
     selectedOutbound: { class: 'economy', fareType: 'Flex', price: 1600 },
     selectedInbound: { class: 'economy', fareType: 'Flex', price: 460 },
-    totalPrice: 2060
+    totalPrice: 2060,
+    passengers: []
   }
 
-  const steps = [
-    { name: 'Flights', status: 'complete' },
-    { name: 'Passengers', status: 'complete' },
-    { name: 'Options', status: 'current' },
-    { name: 'Payment', status: 'upcoming' },
+  const steps: Step[] = [
+    { name: 'Flights', status: 'complete', path: '/search-results' },
+    { name: 'Passengers', status: 'complete', path: '/passengers' },
+    { name: 'Options', status: 'current', path: '/options' },
+    { name: 'Payment', status: 'upcoming', path: '/payment' },
   ]
 
   const ancillaries = [
@@ -124,7 +126,15 @@ export default function Options() {
           <Button
             size="lg"
             className="px-8 py-6 text-lg bg-[#0078D2] hover:bg-[#0078D2]/90 text-white"
-            onClick={() => navigate('/payment', { state: { searchParams, selectedOutbound, selectedInbound, totalPrice } })}
+            onClick={() => navigate('/payment', { 
+              state: { 
+                searchParams, 
+                selectedOutbound, 
+                selectedInbound, 
+                totalPrice,
+                passengers 
+              } 
+            })}
           >
             Continue to Payment
             <ChevronRight className="ml-2 h-5 w-5" />
@@ -287,7 +297,15 @@ export default function Options() {
                 <Button className="flex-1 bg-[#0078D2] hover:bg-[#0078D2]/90 h-9"
                   onClick={() => {
                     setShowSummary(false);
-                    navigate('/payment', { state: { searchParams, selectedOutbound, selectedInbound, totalPrice } });
+                    navigate('/payment', { 
+                      state: { 
+                        searchParams, 
+                        selectedOutbound, 
+                        selectedInbound, 
+                        totalPrice,
+                        passengers 
+                      } 
+                    });
                   }}
                 >
                   Continue to payment

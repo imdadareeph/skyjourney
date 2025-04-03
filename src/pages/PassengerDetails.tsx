@@ -42,25 +42,67 @@ interface Passenger {
   passportExpiry: Date | undefined
 }
 
+interface PassengerCounts {
+  adult: number
+  child: number
+  infant: number
+}
+
 export default function PassengerDetails() {
   const location = useLocation()
   const navigate = useNavigate()
-  const { searchParams, selectedOutbound, selectedInbound, totalPrice } = location.state || {
+  const { searchParams, selectedOutbound, selectedInbound, totalPrice, passengerCounts } = location.state || {
     searchParams: { tripType: 'round-trip', passengers: 1 },
+    passengerCounts: { adult: 1, child: 0, infant: 0 },
     totalPrice: 2060
   }
   const [showSummary, setShowSummary] = useState(false)
-  const [passengers, setPassengers] = useState<Passenger[]>(
-    Array(searchParams.passengers).fill({
-      type: 'adult',
-      firstName: '',
-      lastName: '',
-      nationality: '',
-      dateOfBirth: undefined,
-      passportNumber: '',
-      passportExpiry: undefined
-    })
-  )
+  
+  // Initialize passengers array based on passenger counts
+  const [passengers, setPassengers] = useState<Passenger[]>(() => {
+    const allPassengers: Passenger[] = []
+    
+    // Add adults
+    for (let i = 0; i < passengerCounts.adult; i++) {
+      allPassengers.push({
+        type: 'adult',
+        firstName: '',
+        lastName: '',
+        nationality: '',
+        dateOfBirth: undefined,
+        passportNumber: '',
+        passportExpiry: undefined
+      })
+    }
+    
+    // Add children
+    for (let i = 0; i < passengerCounts.child; i++) {
+      allPassengers.push({
+        type: 'child',
+        firstName: '',
+        lastName: '',
+        nationality: '',
+        dateOfBirth: undefined,
+        passportNumber: '',
+        passportExpiry: undefined
+      })
+    }
+    
+    // Add infants
+    for (let i = 0; i < passengerCounts.infant; i++) {
+      allPassengers.push({
+        type: 'infant',
+        firstName: '',
+        lastName: '',
+        nationality: '',
+        dateOfBirth: undefined,
+        passportNumber: '',
+        passportExpiry: undefined
+      })
+    }
+    
+    return allPassengers
+  })
 
   const handlePassengerChange = (index: number, field: keyof Passenger, value: Passenger[keyof Passenger]) => {
     setPassengers(prev => {
@@ -71,6 +113,13 @@ export default function PassengerDetails() {
       }
       return newPassengers
     })
+  }
+
+  const getPassengerLabel = (index: number) => {
+    const passenger = passengers[index]
+    const typeLabel = passenger.type.charAt(0).toUpperCase() + passenger.type.slice(1)
+    const count = passengers.filter(p => p.type === passenger.type).indexOf(passenger) + 1
+    return `${typeLabel} ${count}`
   }
 
   const handleSubmit = () => {
@@ -142,20 +191,12 @@ export default function PassengerDetails() {
             {passengers.map((passenger, index) => (
               <div key={index} className="border-b pb-8 last:border-b-0">
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-xl font-semibold text-gray-900">Passenger {index + 1}</h2>
-                  <Select
-                    value={passenger.type}
-                    onValueChange={(value: 'adult' | 'child' | 'infant') => handlePassengerChange(index, 'type', value)}
-                  >
-                    <SelectTrigger className="w-[180px]">
-                      <SelectValue placeholder="Select passenger type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="adult">Adult (12+ years)</SelectItem>
-                      <SelectItem value="child">Child (2-11 years)</SelectItem>
-                      <SelectItem value="infant">Infant (Under 2)</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <h2 className="text-xl font-semibold text-gray-900">{getPassengerLabel(index)}</h2>
+                  <div className="text-sm text-gray-500">
+                    {passenger.type === 'adult' ? '12+ years' :
+                     passenger.type === 'child' ? '2-11 years' :
+                     'Under 2 years'}
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -213,17 +254,42 @@ export default function PassengerDetails() {
                           {passenger.dateOfBirth ? format(passenger.dateOfBirth, "PPP") : <span>Pick a date</span>}
                         </Button>
                       </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
+                      <PopoverContent className="w-auto p-0 bg-white" align="start">
                         <Calendar
                           mode="single"
                           selected={passenger.dateOfBirth}
                           onSelect={(date) => handlePassengerChange(index, 'dateOfBirth', date)}
                           initialFocus
+                          className="bg-white"
+                          fromYear={passenger.type === 'adult' ? new Date().getFullYear() - 120 :
+                                   passenger.type === 'child' ? new Date().getFullYear() - 11 :
+                                   new Date().getFullYear() - 2}
+                          toYear={passenger.type === 'adult' ? new Date().getFullYear() :
+                                 passenger.type === 'child' ? new Date().getFullYear() - 2 :
+                                 new Date().getFullYear()}
+                          defaultMonth={passenger.type === 'child' ? (() => {
+                            const date = new Date()
+                            date.setFullYear(date.getFullYear() - 6) // Set to middle of child age range
+                            return date
+                          })() : undefined}
                           disabled={(date) => {
                             const today = new Date()
-                            const minDate = new Date()
-                            minDate.setFullYear(today.getFullYear() - 120)
-                            return date > today || date < minDate
+                            if (passenger.type === 'adult') {
+                              const minDate = new Date()
+                              minDate.setFullYear(today.getFullYear() - 120)
+                              return date > today || date < minDate
+                            } else if (passenger.type === 'child') {
+                              const minDate = new Date()
+                              minDate.setFullYear(today.getFullYear() - 11)
+                              const maxDate = new Date()
+                              maxDate.setFullYear(today.getFullYear() - 2)
+                              // For children, we want dates between minDate and maxDate
+                              return date < minDate || date > maxDate
+                            } else { // infant
+                              const minDate = new Date()
+                              minDate.setFullYear(today.getFullYear() - 2)
+                              return date > today || date < minDate
+                            }
                           }}
                         />
                       </PopoverContent>
@@ -255,12 +321,15 @@ export default function PassengerDetails() {
                           {passenger.passportExpiry ? format(passenger.passportExpiry, "PPP") : <span>Pick a date</span>}
                         </Button>
                       </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
+                      <PopoverContent className="w-auto p-0 bg-white" align="start">
                         <Calendar
                           mode="single"
                           selected={passenger.passportExpiry}
                           onSelect={(date) => handlePassengerChange(index, 'passportExpiry', date)}
                           initialFocus
+                          className="bg-white"
+                          fromYear={new Date().getFullYear()}
+                          toYear={new Date().getFullYear() + 10}
                           disabled={(date) => date < new Date()}
                         />
                       </PopoverContent>

@@ -8,10 +8,13 @@ import BookingNavbar from '@/components/BookingNavbar'
 export default function BookingConfirmation() {
   const location = useLocation()
   const navigate = useNavigate()
-  const { searchParams, selectedOutbound, selectedInbound, totalPrice, bookingReference } = location.state || {
+  const { searchParams, selectedOutbound, selectedInbound, totalPrice, bookingReference, passengers = [] } = location.state || {
     searchParams: { tripType: 'round-trip', passengers: 1 },
+    selectedOutbound: { class: 'economy', fareType: 'Flex', price: 1600 },
+    selectedInbound: { class: 'economy', fareType: 'Flex', price: 460 },
     totalPrice: 2060,
-    bookingReference: 'SJ' + Math.random().toString().slice(2, 8)
+    bookingReference: 'SJ123456',
+    passengers: []
   }
 
   return (
@@ -51,14 +54,34 @@ export default function BookingConfirmation() {
             {/* Passenger Info */}
             <div className="border rounded-lg p-6 mb-6">
               <h3 className="text-lg font-semibold mb-4">Passenger Information</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <p className="text-sm text-gray-500">Passenger</p>
-                  <p className="font-medium">Mr Skyjourney Booking</p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500">Booking Reference</p>
-                  <p className="font-medium">{bookingReference}</p>
+              <div className="space-y-4">
+                {passengers.map((passenger, index) => (
+                  <div key={index} className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                      <p className="text-sm text-gray-500">Passenger {index + 1}</p>
+                      <p className="font-medium">
+                        {passenger.firstName} {passenger.lastName}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500">Type</p>
+                      <p className="font-medium">
+                        {passenger.type.charAt(0).toUpperCase() + passenger.type.slice(1)}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500">E-Ticket Number</p>
+                      <p className="font-medium">
+                        {`${bookingReference.slice(0, 6)}${passenger.type === 'adult' ? 'A' : passenger.type === 'child' ? 'C' : 'I'}${(index + 1).toString().padStart(3, '0')}`}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-sm text-gray-500">Booking Reference</p>
+                    <p className="font-medium">{bookingReference}</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -78,8 +101,8 @@ export default function BookingConfirmation() {
                     </div>
                   </div>
                   <div>
-                    <p className="text-sm text-right text-gray-500">Confirmation Number</p>
-                    <p className="font-medium">{selectedOutbound?.flightId || 'SJ389'}</p>
+                    <p className="text-sm text-right text-gray-500">PNR</p>
+                    <p className="font-medium">{bookingReference}</p>
                   </div>
                 </div>
                 
@@ -142,8 +165,8 @@ export default function BookingConfirmation() {
                       </div>
                     </div>
                     <div>
-                      <p className="text-sm text-right text-gray-500">Confirmation Number</p>
-                      <p className="font-medium">{selectedInbound?.flightId || 'SJ398'}</p>
+                      <p className="text-sm text-right text-gray-500">PNR</p>
+                      <p className="font-medium">{bookingReference}</p>
                     </div>
                   </div>
                   
