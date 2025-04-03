@@ -20,18 +20,26 @@ import {
 import { Input } from "@/components/ui/input"
 import Footer from '@/components/Footer'
 import { format } from 'date-fns'
-import StepIndicator from '@/components/StepIndicator'
+import StepIndicator, { Step } from '@/components/StepIndicator'
+import { cn } from '@/lib/utils'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+import { Calendar } from "@/components/ui/calendar"
+import { CalendarIcon } from "lucide-react"
+import { toast } from "@/components/ui/use-toast"
+import { Label } from "@/components/ui/label"
 
-interface PassengerDetailsProps {
-  title: string
+interface Passenger {
+  type: 'adult' | 'child' | 'infant'
   firstName: string
   lastName: string
-  dateOfBirth: string
   nationality: string
+  dateOfBirth: Date | undefined
   passportNumber: string
-  passportExpiry: string
-  email: string
-  phone: string
+  passportExpiry: Date | undefined
 }
 
 export default function PassengerDetails() {
@@ -39,21 +47,69 @@ export default function PassengerDetails() {
   const navigate = useNavigate()
   const { searchParams, selectedOutbound, selectedInbound, totalPrice } = location.state || {
     searchParams: { tripType: 'round-trip', passengers: 1 },
-    selectedOutbound: { class: 'economy', fareType: 'Flex', price: 1600 },
-    selectedInbound: { class: 'economy', fareType: 'Flex', price: 460 },
     totalPrice: 2060
   }
   const [showSummary, setShowSummary] = useState(false)
+  const [passengers, setPassengers] = useState<Passenger[]>(
+    Array(searchParams.passengers).fill({
+      type: 'adult',
+      firstName: '',
+      lastName: '',
+      nationality: '',
+      dateOfBirth: undefined,
+      passportNumber: '',
+      passportExpiry: undefined
+    })
+  )
 
-  const steps = [
+  const handlePassengerChange = (index: number, field: keyof Passenger, value: Passenger[keyof Passenger]) => {
+    setPassengers(prev => {
+      const newPassengers = [...prev]
+      newPassengers[index] = {
+        ...newPassengers[index],
+        [field]: value
+      }
+      return newPassengers
+    })
+  }
+
+  const handleSubmit = () => {
+    // Validate all required fields for each passenger
+    const hasEmptyFields = passengers.some(passenger => {
+      const requiredFields = ['firstName', 'lastName', 'nationality', 'dateOfBirth', 'passportNumber', 'passportExpiry']
+      return requiredFields.some(field => !passenger[field as keyof Passenger])
+    })
+
+    if (hasEmptyFields) {
+      toast({
+        title: "Required Fields Missing",
+        description: "Please fill in all required fields for each passenger",
+        variant: "destructive",
+      })
+      return
+    }
+
+    navigate('/options', {
+      state: {
+        searchParams,
+        selectedOutbound,
+        selectedInbound,
+        totalPrice,
+        passengers
+      }
+    })
+  }
+
+  const steps: Step[] = [
+    { name: 'Search', status: 'complete' },
     { name: 'Flights', status: 'complete' },
     { name: 'Passengers', status: 'current' },
     { name: 'Options', status: 'upcoming' },
-    { name: 'Payment', status: 'upcoming' },
+    { name: 'Payment', status: 'upcoming' }
   ]
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gradient-to-b from-white to-secondary">
       <ItineraryBar 
         departureCode="DXB"
         departureName="Dubai"
@@ -70,97 +126,161 @@ export default function PassengerDetails() {
       {/* Progress Indicator */}
       <StepIndicator steps={steps} />
 
-      {/* Passenger Form */}
-      <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:px-8">
-        <div className="space-y-8">
-          <div>
-            <h2 className="text-2xl font-semibold text-gray-900">Passenger Details</h2>
-            <p className="mt-1 text-sm text-gray-600">Please enter the details for each passenger as they appear on their passport.</p>
+      <main className="container mx-auto px-4 py-8">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="w-10 h-10 bg-[#0078D2] rounded-full flex items-center justify-center">
+              <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M12 14C8.13401 14 5 17.134 5 21H19C19 17.134 15.866 14 12 14Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
+            <h1 className="text-3xl font-bold text-gray-900">Passenger details</h1>
           </div>
 
-          <div className="space-y-6 bg-white p-8 border rounded-lg">
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-              <div className="sm:col-span-2">
-                <label htmlFor="title" className="block text-sm font-medium text-gray-700">Title</label>
-                <Select>
-                  <SelectTrigger className="mt-1 bg-white">
-                    <SelectValue placeholder="Select title" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white">
-                    <SelectItem value="mr">Mr</SelectItem>
-                    <SelectItem value="mrs">Mrs</SelectItem>
-                    <SelectItem value="ms">Ms</SelectItem>
-                    <SelectItem value="miss">Miss</SelectItem>
-                    <SelectItem value="dr">Dr</SelectItem>
-                  </SelectContent>
-                </Select>
+          <div className="bg-white rounded-xl shadow-lg p-6 space-y-8">
+            {passengers.map((passenger, index) => (
+              <div key={index} className="border-b pb-8 last:border-b-0">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-xl font-semibold text-gray-900">Passenger {index + 1}</h2>
+                  <Select
+                    value={passenger.type}
+                    onValueChange={(value: 'adult' | 'child' | 'infant') => handlePassengerChange(index, 'type', value)}
+                  >
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="Select passenger type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="adult">Adult (12+ years)</SelectItem>
+                      <SelectItem value="child">Child (2-11 years)</SelectItem>
+                      <SelectItem value="infant">Infant (Under 2)</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <Label>First name</Label>
+                    <Input
+                      placeholder="Enter first name"
+                      value={passenger.firstName}
+                      onChange={(e) => handlePassengerChange(index, 'firstName', e.target.value)}
+                      className="mt-1"
+                    />
+                  </div>
+
+                  <div>
+                    <Label>Last name</Label>
+                    <Input
+                      placeholder="Enter last name"
+                      value={passenger.lastName}
+                      onChange={(e) => handlePassengerChange(index, 'lastName', e.target.value)}
+                      className="mt-1"
+                    />
+                  </div>
+
+                  <div>
+                    <Label>Nationality</Label>
+                    <Select
+                      value={passenger.nationality}
+                      onValueChange={(value) => handlePassengerChange(index, 'nationality', value)}
+                    >
+                      <SelectTrigger className="mt-1">
+                        <SelectValue placeholder="Select nationality" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="United Arab Emirates">United Arab Emirates</SelectItem>
+                        <SelectItem value="United Kingdom">United Kingdom</SelectItem>
+                        <SelectItem value="United States">United States</SelectItem>
+                        <SelectItem value="France">France</SelectItem>
+                        <SelectItem value="Germany">Germany</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div>
+                    <Label>Date of birth</Label>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          className={cn(
+                            "w-full justify-start text-left font-normal mt-1",
+                            !passenger.dateOfBirth && "text-muted-foreground"
+                          )}
+                        >
+                          <CalendarIcon className="mr-2 h-4 w-4" />
+                          {passenger.dateOfBirth ? format(passenger.dateOfBirth, "PPP") : <span>Pick a date</span>}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={passenger.dateOfBirth}
+                          onSelect={(date) => handlePassengerChange(index, 'dateOfBirth', date)}
+                          initialFocus
+                          disabled={(date) => {
+                            const today = new Date()
+                            const minDate = new Date()
+                            minDate.setFullYear(today.getFullYear() - 120)
+                            return date > today || date < minDate
+                          }}
+                        />
+                      </PopoverContent>
+                    </Popover>
+                  </div>
+
+                  <div>
+                    <Label>Passport number</Label>
+                    <Input
+                      placeholder="Enter passport number"
+                      value={passenger.passportNumber}
+                      onChange={(e) => handlePassengerChange(index, 'passportNumber', e.target.value)}
+                      className="mt-1"
+                    />
+                  </div>
+
+                  <div>
+                    <Label>Passport expiry date</Label>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          className={cn(
+                            "w-full justify-start text-left font-normal mt-1",
+                            !passenger.passportExpiry && "text-muted-foreground"
+                          )}
+                        >
+                          <CalendarIcon className="mr-2 h-4 w-4" />
+                          {passenger.passportExpiry ? format(passenger.passportExpiry, "PPP") : <span>Pick a date</span>}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={passenger.passportExpiry}
+                          onSelect={(date) => handlePassengerChange(index, 'passportExpiry', date)}
+                          initialFocus
+                          disabled={(date) => date < new Date()}
+                        />
+                      </PopoverContent>
+                    </Popover>
+                  </div>
+                </div>
               </div>
-              <div>
-                <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">First Name</label>
-                <Input id="firstName" type="text" className="mt-1" />
-              </div>
-              <div>
-                <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">Last Name</label>
-                <Input id="lastName" type="text" className="mt-1" />
-              </div>
-              <div>
-                <label htmlFor="dateOfBirth" className="block text-sm font-medium text-gray-700">Date of Birth</label>
-                <Input id="dateOfBirth" type="date" className="mt-1" />
-              </div>
-              <div>
-                <label htmlFor="nationality" className="block text-sm font-medium text-gray-700">Nationality</label>
-                <Select>
-                  <SelectTrigger className="mt-1 bg-white">
-                    <SelectValue placeholder="Select nationality" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white">
-                    <SelectItem value="ae">United Arab Emirates</SelectItem>
-                    <SelectItem value="gb">United Kingdom</SelectItem>
-                    <SelectItem value="us">United States</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <label htmlFor="passportNumber" className="block text-sm font-medium text-gray-700">Passport Number</label>
-                <Input id="passportNumber" type="text" className="mt-1" />
-              </div>
-              <div>
-                <label htmlFor="passportExpiry" className="block text-sm font-medium text-gray-700">Passport Expiry Date</label>
-                <Input id="passportExpiry" type="date" className="mt-1" />
-              </div>
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
-                <Input id="email" type="email" className="mt-1" />
-              </div>
-              <div>
-                <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Phone Number</label>
-                <Input id="phone" type="tel" className="mt-1" />
-              </div>
+            ))}
+
+            <div className="flex justify-end">
+              <Button
+                onClick={handleSubmit}
+                className="bg-[#0078D2] hover:bg-[#0078D2]/90 text-white"
+              >
+                Continue to options
+              </Button>
             </div>
           </div>
         </div>
-
-        {/* Navigation Buttons */}
-        <div className="mt-8 flex justify-between">
-          <Button
-            variant="outline"
-            size="lg"
-            className="px-8 py-6 text-lg"
-            onClick={() => navigate(-1)}
-          >
-            <ChevronLeft className="mr-2 h-5 w-5" />
-            Return to Flights
-          </Button>
-          <Button
-            size="lg"
-            className="px-8 py-6 text-lg bg-[#0078D2] hover:bg-[#0078D2]/90 text-white"
-            onClick={() => navigate('/options', { state: { searchParams, selectedOutbound, selectedInbound, totalPrice } })}
-          >
-            Continue to Options
-            <ChevronRight className="ml-2 h-5 w-5" />
-          </Button>
-        </div>
-      </div>
+      </main>
 
       {/* Summary Dialog */}
       <Dialog open={showSummary} onOpenChange={setShowSummary}>

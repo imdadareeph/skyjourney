@@ -97,32 +97,45 @@ export default function Payment() {
 
       {/* Flight Summary Section */}
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        <h1 className="text-3xl font-bold text-gray-900">Review your selection</h1>
+        <div className="flex items-center gap-3 mb-8">
+          <div className="w-10 h-10 bg-[#0078D2] rounded-full flex items-center justify-center">
+            <Check className="h-6 w-6 text-white" />
+          </div>
+          <h1 className="text-3xl font-bold text-gray-900">Review your selection</h1>
+        </div>
         
-        <div className="mt-6 bg-white border rounded-lg p-6">
-          <div className="flex justify-between items-center border-b pb-4">
-            <h2 className="font-semibold text-xl">Flights</h2>
-            <div className="text-sm text-gray-500">
-              For 1 passenger (including airfare, taxes, fees and carrier-imposed charges)
-              <span className="ml-2 font-semibold text-black">Total: AED {totalPrice.toLocaleString()}</span>
+        <div className="mt-6 bg-gradient-to-br from-white to-blue-50 border-2 border-gray-100 rounded-xl p-6 shadow-sm">
+          <div className="flex justify-between items-center border-b pb-6">
+            <div>
+              <h2 className="font-semibold text-xl text-gray-900">Flights</h2>
+              <p className="text-sm text-gray-600 mt-1">Review your flight details and fare conditions</p>
+            </div>
+            <div className="text-right">
+              <div className="text-sm text-gray-500">
+                For 1 passenger (including airfare, taxes, fees and carrier-imposed charges)
+              </div>
+              <div className="text-xl font-bold text-[#0078D2] mt-1">
+                AED {totalPrice.toLocaleString()}
+              </div>
             </div>
           </div>
 
-          <div className="py-4">
+          <div className="py-6">
             <div className="flex justify-between items-center">
               <div>
-                <div className="flex items-center">
-                  <span className="text-lg font-medium">Thu 8 May 25</span>
+                <div className="flex items-center gap-2">
+                  <span className="text-lg font-medium text-gray-900">Thu 8 May 25</span>
+                  <span className="px-2 py-1 bg-blue-50 text-[#0078D2] text-sm rounded-full">Outbound</span>
                 </div>
-                <div className="text-2xl font-semibold mt-1">14:15</div>
-                <div className="text-gray-600">Dubai (DXB)</div>
+                <div className="text-3xl font-bold text-gray-900 mt-2">14:15</div>
+                <div className="text-gray-600 mt-1">Dubai (DXB)</div>
               </div>
               
               <div className="text-center">
                 <div className="text-sm text-gray-500">7h 25m</div>
-                <div className="flex items-center justify-center my-2">
+                <div className="flex items-center justify-center my-3">
                   <div className="w-24 h-[1px] bg-gray-300"></div>
-                  <div className="mx-2">✈</div>
+                  <div className="mx-2 text-[#0078D2]">✈</div>
                   <div className="w-24 h-[1px] bg-gray-300"></div>
                 </div>
                 <div className="text-sm text-gray-600">Non-stop</div>
@@ -130,62 +143,90 @@ export default function Payment() {
               
               <div>
                 <div className="flex items-center">
-                  <span className="text-lg font-medium">Thu 8 May 25</span>
+                  <span className="text-lg font-medium text-gray-900">Thu 8 May 25</span>
                 </div>
-                <div className="text-2xl font-semibold mt-1">18:40</div>
-                <div className="text-gray-600">London Heathrow (LHR)</div>
+                <div className="text-3xl font-bold text-gray-900 mt-2">18:40</div>
+                <div className="text-gray-600 mt-1">London Heathrow (LHR)</div>
               </div>
               
-              <div>
+              <div className="bg-gray-50 p-3 rounded-lg">
                 <div className="text-sm text-gray-500">Class / Fare:</div>
-                <div className="font-medium">Economy / Flex</div>
+                <div className="font-medium text-gray-900">Economy / Flex</div>
               </div>
             </div>
 
-            <div className="flex justify-between mt-6 pt-4 border-t text-sm">
-              <div className="flex items-center">
-                <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <div className="flex justify-between mt-8 pt-6 border-t text-sm">
+              <div className="flex items-center gap-2 bg-gray-50 px-4 py-2 rounded-lg">
+                <svg className="w-5 h-5 text-[#0078D2]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M9 14L4 9L9 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                   <path d="M20 20V13C20 11.9391 19.5786 10.9217 18.8284 10.1716C18.0783 9.42143 17.0609 9 16 9H4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
-                <span>Checked baggage: 30kg</span>
+                <span className="text-gray-700">Checked baggage: 30kg</span>
               </div>
-              <div className="flex items-center">
-                <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <div className="flex items-center gap-2 bg-gray-50 px-4 py-2 rounded-lg">
+                <svg className="w-5 h-5 text-[#0078D2]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M9 14L4 9L9 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                   <path d="M20 20V13C20 11.9391 19.5786 10.9217 18.8284 10.1716C18.0783 9.42143 17.0609 9 16 9H4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
-                <span>Change fee: AED 240</span>
-                <span className="ml-1 text-gray-500">No-show penalty AED 480</span>
+                <span className="text-gray-700">Change fee: AED 240</span>
+                <span className="text-gray-500">No-show penalty AED 480</span>
               </div>
-              <div className="flex items-center">
-                <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <div className="flex items-center gap-2 bg-gray-50 px-4 py-2 rounded-lg">
+                <svg className="w-5 h-5 text-[#0078D2]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M9 14L4 9L9 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                   <path d="M20 20V13C20 11.9391 19.5786 10.9217 18.8284 10.1716C18.0783 9.42143 17.0609 9 16 9H4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
-                <span>Refund fee: AED 370</span>
-                <span className="ml-1 text-gray-500">No-show penalty AED 740</span>
+                <span className="text-gray-700">Refund fee: AED 370</span>
+                <span className="text-gray-500">No-show penalty AED 740</span>
               </div>
             </div>
           </div>
         </div>
 
         {/* Passengers Section */}
-        <div className="mt-8 bg-white border rounded-lg p-6">
-          <h2 className="text-xl font-semibold mb-4">Passengers (1 Adult)</h2>
-          <div className="border-t pt-4">
-            <p className="text-lg">Mr Skyjourney Booking</p>
+        <div className="mt-8 bg-gradient-to-br from-white to-blue-50 border-2 border-gray-100 rounded-xl p-6 shadow-sm">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-8 h-8 bg-[#0078D2] rounded-full flex items-center justify-center">
+              <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M12 14C8.13401 14 5 17.134 5 21H19C19 17.134 15.866 14 12 14Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
+            <h2 className="text-xl font-semibold text-gray-900">Passengers ({searchParams.passengers} {searchParams.passengers === 1 ? 'Adult' : 'Adults'})</h2>
+          </div>
+          <div className="border-t pt-4 space-y-4">
+            {[...Array(searchParams.passengers)].map((_, index) => (
+              <div key={index} className="flex items-center justify-between bg-white p-4 rounded-lg">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
+                    <span className="text-lg font-medium text-gray-600">
+                      {String.fromCharCode(65 + index)}
+                    </span>
+                  </div>
+                  <div>
+                    <p className="text-lg font-medium text-gray-900">Mr Skyjourney Booking</p>
+                    <p className="text-sm text-gray-500">Adult</p>
+                  </div>
+                </div>
+                <div className="text-sm text-gray-500">
+                  Seat: {12 + index}A
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 
         {/* SkyJourney Foundation Section */}
-        <div className="mt-8 bg-white border rounded-lg p-6">
+        <div className="mt-8 bg-gradient-to-br from-white to-blue-50 border-2 border-gray-100 rounded-xl p-6 shadow-sm">
           <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <div className="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center text-white font-bold mr-3">S</div>
-              <span className="font-medium">Donate to the SkyJourney Airline Foundation</span>
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center text-white font-bold">S</div>
+              <div>
+                <span className="font-medium text-gray-900">Donate to the SkyJourney Airline Foundation</span>
+                <p className="text-sm text-gray-500 mt-1">Support humanitarian and community projects worldwide</p>
+              </div>
             </div>
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" className="border-2 hover:border-[#0078D2] hover:bg-blue-50">
               Show
               <ChevronRight className="ml-1 h-4 w-4" />
             </Button>

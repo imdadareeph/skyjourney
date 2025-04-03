@@ -1,4 +1,4 @@
-
+import React from 'react'
 import FlightSearchForm from "@/components/FlightSearchForm";
 import DestinationsShowcase from "@/components/DestinationsShowcase";
 import Navbar from "@/components/Navbar";
@@ -8,44 +8,36 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-secondary">
       <Navbar />
-      {/* Hero Section */}
-      <section
-        className="relative min-h-[80vh] flex items-center justify-center bg-cover bg-center p-6"
-        style={{
-          backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url(https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop)`,
-        }}
-      >
-        <div className="container max-w-7xl mx-auto space-y-8 animate-slide-up">
-          <div className="text-center text-white space-y-4">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold">
-              Your Journey Begins Here
-            </h1>
-            <p className="text-xl opacity-90">
-              Experience premium travel at its finest
-            </p>
+      <main>
+        <section className="relative">
+          <div className="absolute inset-0">
+            <img
+              className="h-full w-full object-cover"
+              src="/images/hero-bg.jpg"
+              alt="SkyJourney Hero"
+            />
+            <div className="absolute inset-0 bg-black/50" />
           </div>
-          <FlightSearchForm />
-        </div>
-      </section>
-
-      {/* Popular Destinations Section */}
-      <section className="py-16 px-6">
-        <div className="container max-w-7xl mx-auto space-y-8">
-          <div className="text-center space-y-4">
-            <h2 className="text-3xl md:text-4xl font-bold text-primary">
-              Popular Destinations
-            </h2>
-            <p className="text-lg text-muted-foreground">
-              Discover our most beloved travel destinations
-            </p>
+          <div className="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
+            <div className="text-center">
+              <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl">
+                <span className="block">Welcome to SkyJourney</span>
+                <span className="block text-[#0078D2]">Your Journey Begins Here</span>
+              </h1>
+              <p className="mx-auto mt-3 max-w-md text-base text-gray-300 sm:text-lg md:mt-5 md:max-w-3xl md:text-xl">
+                Experience luxury and comfort in the skies. Book your next adventure with SkyJourney.
+              </p>
+            </div>
+            <div className="mt-12">
+              <FlightSearchForm />
+            </div>
           </div>
-          <DestinationsShowcase />
-        </div>
-      </section>
-
+        </section>
+        <DestinationsShowcase />
+      </main>
       <Footer />
     </div>
-  );
-};
+  )
+}
 
-export default Index;
+export default Index

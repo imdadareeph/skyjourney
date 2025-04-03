@@ -5,12 +5,13 @@ import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
 import { format } from "date-fns"
-import { Calendar as CalendarIcon, Plane, User } from "lucide-react"
+import { Calendar as CalendarIcon, Plane, User, ChevronDown } from "lucide-react"
 import Select, { StylesConfig } from 'react-select'
 import airportConfig from '@/config/airportConfig.json'
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
 import { toast } from "@/components/ui/use-toast"
+import PassengerSelector from './PassengerSelector'
 
 interface Airport {
   code: string
@@ -334,35 +335,18 @@ export default function FlightSearchForm() {
                 <PopoverTrigger asChild>
                   <Button
                     variant="outline"
-                    className="w-full justify-start text-left font-normal border-2 mt-1 bg-white opacity-100"
+                    role="combobox"
+                    className="w-full justify-between border-2 focus:border-[#0078D2] focus:ring-0"
                   >
-                    <User className="mr-2 h-4 w-4" />
-                    {passengers} {passengers === 1 ? 'passenger' : 'passengers'}
+                    {passengers} {passengers === 1 ? 'Passenger' : 'Passengers'}
+                    <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-80 p-4 bg-white opacity-100">
-                  <div className="flex items-center justify-between">
-                    <div className="flex-1">
-                      <Label>Number of passengers</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        onClick={() => setPassengers(Math.max(1, passengers - 1))}
-                      >
-                        -
-                      </Button>
-                      <span className="min-w-[3ch] text-center">{passengers}</span>
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        onClick={() => setPassengers(passengers + 1)}
-                      >
-                        +
-                      </Button>
-                    </div>
-                  </div>
+                <PopoverContent className="w-[300px] p-4">
+                  <PassengerSelector
+                    value={passengers}
+                    onChange={setPassengers}
+                  />
                 </PopoverContent>
               </Popover>
             </div>
@@ -381,7 +365,7 @@ export default function FlightSearchForm() {
       <style>{`
         .required-field-missing {
           border-color: #e11d48 !important; /* red-600 */
-          background-color: rgba(254, 242, 242, 0.8) !important; /* red-50 with some opacity */
+          background-color: #fef2f2 !important; /* red-50 without opacity */
           box-shadow: 0 0 0 1px #e11d48 !important; /* red-600 */
         }
       `}</style>
